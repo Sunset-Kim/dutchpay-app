@@ -1,5 +1,5 @@
 import { NativeSelect, TextInput, NumberInput, Switch, Button, Box } from "@mantine/core";
-import { FormEventHandler, useState } from "react";
+import React, { FormEventHandler, ReactNode, useState } from "react";
 
 interface PayInfo {
   payer: string;
@@ -11,6 +11,13 @@ interface AddExpenseFormProps {
   onSubmit: (param: PayInfo) => void;
 }
 
+type SubmitError = "price" | "payer";
+
+const errorCase: Record<SubmitError, (value: any) => ReactNode> = {
+  payer: (payer: string) => (payer === "0" ? "option을 선택해야합니다" : false),
+  price: (price: number) => (price === 0 ? "금액을 입력해야합니다" : false),
+};
+
 export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProps) {
   const [payer, setPayer] = useState<string>("0");
   const [price, setPrice] = useState<number>(0);
@@ -18,8 +25,14 @@ export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProp
   const [isCalendar, setIsCalender] = useState(false);
   const optionsData = members.map((member, index) => ({ value: (index + 1).toString(), label: member }));
 
+  const isErrorPayer = errorCase.payer(payer);
+  const isErrorPrice = errorCase.price(price);
+
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
+    if (isErrorPayer || isErrorPrice) {
+      return;
+    }
     onSubmit({
       payer: members[Number(payer) - 1],
       price,
@@ -33,7 +46,7 @@ export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProp
       <NativeSelect
         value={payer}
         onChange={(event) => setPayer(event.currentTarget.value)}
-        error={payer === "0" && "선택해요"}
+        error={isErrorPayer}
         data={[{ value: "0", label: "결제한 사람을 선택해주세요" }, ...optionsData]}
       />
       <NumberInput
@@ -45,7 +58,7 @@ export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProp
         formatter={(value) =>
           !Number.isNaN(parseFloat(value!)) ? `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "$ "
         }
-        error={price === 0 && "0은 절대 아니됩니다"}
+        error={isErrorPrice}
         onChange={(val) => setPrice(val ?? 0)}
       />
       <TextInput
