@@ -1,0 +1,54 @@
+@startuml react component
+
+object CreateGroup {
+  state groupName: string
+  state isValidate: boolean
+}
+object AddMembers {
+  state members: string[]
+  state isValidate: boolean
+}
+object ExpenseMain {
+  groupName: string
+  members: string
+
+  'TODO: state
+}
+
+object CenteredOverlayForm {
+  props title: string
+  props inputType: string
+  props onSumit: function
+
+  state value: string
+}
+
+object CentertedOverlay
+
+
+object AddExpenseForm {
+  members: string[]
+
+  state payer: string
+  state description: string
+  state amount: number
+  state paidAt: Date
+  state isValidate: boolean
+}
+object ExpenseSummary {
+  expenses: expense[]
+  members: string[]
+}
+object ExpenseList
+
+CenteredOverlayForm *-- CentertedOverlay
+CreateGroup *-- CenteredOverlayForm
+AddMembers *-- CenteredOverlayForm
+
+ExpenseMain *-- AddExpenseForm
+ExpenseMain *-- ExpenseSummary
+ExpenseMain *-- ExpenseList
+
+ExpenseList *-- CentertedOverlay
+
+@enduml
