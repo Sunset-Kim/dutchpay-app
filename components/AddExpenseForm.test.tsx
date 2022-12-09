@@ -41,18 +41,25 @@ describe("AddExpenseForm(정산정보 입력폼)", () => {
   // });
 
   it("input을 모두 입력하지 않으면 에러메세지가 나온다", async () => {
-    const { options, price, desc } = renderComponent(["김영식", "김민우"]);
+    const { options, addBtn, price, desc, handleSubmit } = renderComponent(["김영식", "김민우"]);
     expect(screen.queryAllByRole("alert")).toHaveLength(2);
+    await userEvent.click(addBtn);
+    expect(handleSubmit).not.toBeCalled();
 
-    await userEvent.selectOptions(screen.getByRole("combobox"), screen.getByRole("option", { name: "김영식" }));
-    expect(screen.getByRole("option", { name: "김영식" })).toBeInTheDocument();
+    await userEvent.selectOptions(screen.getByRole("combobox"), options[1]);
+    expect(options[1]).toBeInTheDocument();
     expect(screen.queryAllByRole("alert")).toHaveLength(1);
+    await userEvent.click(addBtn);
+    expect(handleSubmit).not.toBeCalled();
 
     await userEvent.type(price, "20000");
     expect(screen.queryAllByRole("alert")).toHaveLength(0);
+    await userEvent.click(addBtn);
+    expect(handleSubmit).toBeCalled();
 
     await userEvent.type(desc, "차비");
     expect(screen.queryAllByRole("alert")).toHaveLength(0);
+    expect(handleSubmit).toBeCalled();
   });
 
   it("모든 값이 입력되고 저장을 누르면 onSubmit이 실행된다", async () => {
