@@ -28,18 +28,24 @@ object CentertedOverlay
 
 object AddExpenseForm {
   members: string[]
-
+  ---
+  state isCalender: boolean
+  state paidAt: Date
+  --- 
   state payer: string
   state description: string
-  state amount: number
-  state paidAt: Date
-  state isValidate: boolean
+  state price: number
 }
 object ExpenseSummary {
   expenses: expense[]
   members: string[]
 }
 object ExpenseList
+
+object CalenderInput {
+  props date: Date
+  props onChange: function
+}
 
 CenteredOverlayForm *-- CentertedOverlay
 CreateGroup *-- CenteredOverlayForm
@@ -48,6 +54,8 @@ AddMembers *-- CenteredOverlayForm
 ExpenseMain *-- AddExpenseForm
 ExpenseMain *-- ExpenseSummary
 ExpenseMain *-- ExpenseList
+
+AddExpenseForm *-- CalenderInput
 
 ExpenseList *-- CentertedOverlay
 
