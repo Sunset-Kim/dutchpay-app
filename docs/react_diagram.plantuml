@@ -37,10 +37,16 @@ object AddExpenseForm {
   state date: Date
 }
 object ExpenseSummary {
-  expenses: expense[]
+  expenses: ExpenseInfo[]
   members: string[]
 }
-object ExpenseList
+object ExpenseList {
+  list: ExpenseInfo[]
+}
+
+object ExpenseItem {
+  data: ExpenseInfo
+}
 
 object CalenderInput {
   props value: Date
@@ -59,4 +65,5 @@ AddExpenseForm *-- CalenderInput
 
 ExpenseList *-- CentertedOverlay
 
+ExpenseItem *-- ExpenseList
 @enduml
