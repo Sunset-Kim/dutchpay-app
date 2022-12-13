@@ -1,4 +1,4 @@
-import { NativeSelect, TextInput, NumberInput, Switch, Button, Box } from "@mantine/core";
+import { NativeSelect, TextInput, NumberInput, Switch, Button, Box, Card, Stack, Group } from "@mantine/core";
 import React, { FormEventHandler, ReactNode, useState } from "react";
 import CalendarInput from "./CalendarInput";
 
@@ -53,39 +53,55 @@ export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProp
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit}>
-      <Switch checked={isCalendar} onChange={(e) => setIsCalender(e.currentTarget.checked)} />
-      {isCalendar && <CalendarInput value={date} onChange={(value) => setDate(value)} isError={!date} />}
+    <Card shadow={"md"} p="lg" maw={360} mx="auto">
+      <Card.Section withBorder inheritPadding py="xs" sx={{ justifyContent: "flex-end" }}>
+        <Group position="right">
+          <Switch
+            labelPosition="left"
+            label="날짜입력 활성화"
+            checked={isCalendar}
+            onChange={(e) => setIsCalender(e.currentTarget.checked)}
+          />
+        </Group>
+      </Card.Section>
+      <Card.Section inheritPadding component="form" py="lg" onSubmit={handleSubmit}>
+        <Stack>
+          {isCalendar && <CalendarInput value={date} onChange={(value) => setDate(value)} isError={!date} />}
+          <NativeSelect
+            label="결제한 사람 선택"
+            value={payer}
+            onChange={(event) => setPayer(event.currentTarget.value)}
+            error={isErrorPayer}
+            data={[{ value: "0", label: "결제한 사람을 선택해주세요" }, ...optionsData]}
+            required
+          />
+          <NumberInput
+            value={price}
+            label="Price"
+            name="price"
+            hideControls
+            step={100}
+            parser={(value) => value?.replace(/\$\s?|(,*)/g, "")}
+            formatter={(value) =>
+              !Number.isNaN(parseFloat(value!)) ? `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "$ "
+            }
+            error={isErrorPrice}
+            onChange={(val) => {
+              setPrice(val ?? 0);
+            }}
+            required
+          />
 
-      <NativeSelect
-        value={payer}
-        onChange={(event) => setPayer(event.currentTarget.value)}
-        error={isErrorPayer}
-        data={[{ value: "0", label: "결제한 사람을 선택해주세요" }, ...optionsData]}
-      />
-      <NumberInput
-        value={price}
-        label="Price"
-        name="price"
-        hideControls
-        step={100}
-        parser={(value) => value?.replace(/\$\s?|(,*)/g, "")}
-        formatter={(value) =>
-          !Number.isNaN(parseFloat(value!)) ? `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "$ "
-        }
-        error={isErrorPrice}
-        onChange={(val) => {
-          setPrice(val ?? 0);
-        }}
-      />
-      <TextInput
-        value={desc}
-        label="Description"
-        name="desc"
-        onChange={(event) => setDesc(event.currentTarget.value)}
-      />
+          <TextInput
+            value={desc}
+            label="Description"
+            name="desc"
+            onChange={(event) => setDesc(event.currentTarget.value)}
+          />
 
-      <Button type="submit">추가</Button>
-    </Box>
+          <Button type="submit">추가</Button>
+        </Stack>
+      </Card.Section>
+    </Card>
   );
 }

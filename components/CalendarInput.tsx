@@ -1,4 +1,4 @@
-import { Box, Card, Input, TextInput } from "@mantine/core";
+import { Box, Card, Input, Portal, TextInput } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import dayjs from "dayjs";
 import { useState } from "react";
@@ -34,7 +34,7 @@ export default function CalendarInput({ value, onChange, isError, errorMessage }
         readOnly
       />
       {isModal && (
-        <Card w="fit-content" p="md" mt={10} shadow="sm" radius="sm" withBorder>
+        <Card w="fit-content" p="xs" mt={5} mx="auto" shadow="sm" radius="sm" withBorder>
           <Calendar data-testid="calendar" value={value} onChange={handleChange} />
         </Card>
       )}
