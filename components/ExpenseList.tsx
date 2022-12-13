@@ -11,7 +11,7 @@ interface ExpenseListProps {
 
 export default function ExpenseList({ list }: ExpenseListProps) {
   if (list.length === 0) {
-    return <NoContent>정산정보를 추가해 주세요</NoContent>;
+    return <NoContent>정산정보 입력창에서 정산정보를 추가해보세요!</NoContent>;
   }
 
   const rows = list.map((expense, i) => {
