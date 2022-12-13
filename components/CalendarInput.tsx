@@ -1,10 +1,10 @@
-import { Box, Card, Input } from "@mantine/core";
+import { Box, Card, Input, TextInput } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import dayjs from "dayjs";
 import { useState } from "react";
 
 interface CalendarInputProps {
-  value: Date;
+  value?: Date;
   onChange: (value: Date) => void;
 }
 
@@ -20,7 +20,12 @@ export default function CalendarInput({ value, onChange }: CalendarInputProps) {
 
   return (
     <>
-      <Input value={dayjs(value).format("YYYY-MM-DD")} onClick={toggleModal} readOnly />
+      <TextInput
+        label="날짜를 선택하세요"
+        value={value instanceof Date ? dayjs(value).format("YYYY-MM-DD") : undefined}
+        onClick={toggleModal}
+        name="calendar"
+      />
       {isModal && (
         <Card w="fit-content" p="md" mt={10} shadow="sm" radius="sm" withBorder>
           <Calendar data-testid="calendar" value={value} onChange={handleChange} />
