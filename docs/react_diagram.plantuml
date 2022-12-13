@@ -30,11 +30,11 @@ object AddExpenseForm {
   members: string[]
   ---
   state isCalender: boolean
-  state paidAt: Date
   --- 
   state payer: string
   state description: string
   state price: number
+  state date: Date
 }
 object ExpenseSummary {
   expenses: expense[]
@@ -43,8 +43,8 @@ object ExpenseSummary {
 object ExpenseList
 
 object CalenderInput {
-  props date: Date
-  props onChange: function
+  props value: Date
+  props onChange: (value: Date) => void
 }
 
 CenteredOverlayForm *-- CentertedOverlay
