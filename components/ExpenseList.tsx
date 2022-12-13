@@ -1,8 +1,9 @@
-import { ActionIcon, Group, ScrollArea, Table, Text } from "@mantine/core";
+import { ActionIcon, Badge, Group, ScrollArea, Table, Text } from "@mantine/core";
 import { ExpenseInfo } from "../types/Expense.type";
 import dayjs from "dayjs";
 import NoContent from "./NoContent";
 import { IconPencil, IconTrash } from "@tabler/icons";
+import Price from "./Price";
 
 interface ExpenseListProps {
   list: ExpenseInfo[];
@@ -23,7 +24,9 @@ export default function ExpenseList({ list }: ExpenseListProps) {
         <td>
           <Text size={"sm"}>{payer}</Text>
         </td>
-        <td>{price}</td>
+        <td>
+          <Price value={price} />
+        </td>
         <td>
           <Text align="left">{desc ?? "-"}</Text>
         </td>
