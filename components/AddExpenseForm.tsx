@@ -1,16 +1,11 @@
 import { NativeSelect, TextInput, NumberInput, Switch, Button, Box, Card, Stack, Group } from "@mantine/core";
 import React, { FormEventHandler, ReactNode, useState } from "react";
+import { ExpenseInfo } from "../types/Expense.type";
 import CalendarInput from "./CalendarInput";
 
-interface PayInfo {
-  payer: string;
-  price: number;
-  desc?: string;
-  date?: Date;
-}
 interface AddExpenseFormProps {
   members: string[];
-  onSubmit: (param: PayInfo) => void;
+  onSubmit: (param: ExpenseInfo) => void;
 }
 
 type SubmitError = "price" | "payer";
@@ -53,7 +48,7 @@ export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProp
   };
 
   return (
-    <Card shadow={"md"} p="lg" maw={360} mx="auto">
+    <Card w="full" shadow={"md"} p="lg" maw={360} mx="auto">
       <Card.Section withBorder inheritPadding py="xs" sx={{ justifyContent: "flex-end" }}>
         <Group position="right">
           <Switch
