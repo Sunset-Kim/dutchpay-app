@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react";
 import AddExpenseForm from "./AddExpenseForm";
 import userEvent from "@testing-library/user-event";
 
+const handleSubmit = jest.fn();
 const renderComponent = (members: string[]) => {
-  const handleSubmit = jest.fn();
   render(<AddExpenseForm onSubmit={handleSubmit} members={members} />);
 
   const options = screen.queryAllByRole("option");
@@ -23,22 +23,23 @@ const renderComponent = (members: string[]) => {
 };
 
 describe("AddExpenseForm(정산정보 입력폼)", () => {
-  it("렌더링되면 price, desc, 비용지불자가 렌더링된다", () => {
-    const { options, price, desc } = renderComponent(["김영식", "김민우"]);
+  it("비용, 설명, 비용자를 선택할 수 있는 input이 생긴다", () => {
+    const { options, price, desc, calendarToggle } = renderComponent(["김영식", "김민우"]);
     expect(options).toHaveLength(3);
     expect(
       screen.getByRole("option", { name: "결제한 사람을 선택해주세요", selected: true }) as HTMLOptionElement
     ).not.toBeNull();
+    expect(calendarToggle).toBeInTheDocument();
     expect(price).toBeInTheDocument();
     expect(desc).toBeInTheDocument();
   });
 
-  //TODO: Calendar Component 완성이후
-  // it.todo("캘린더 보기를 선택하면, 캘린더가 렌더링 된다", async () => {
-  //   const { calendarToggle } = renderComponent(["김영식", "김민우"]);
-  //   await userEvent.click(calendarToggle);
-  //   expect(screen.getByTestId("calendar")).toBeInTheDocument();
-  // });
+  it("캘린더 보기를 체크하면, 캘린더가 렌더링 된다", async () => {
+    const { calendarToggle } = renderComponent(["김영식", "김민우"]);
+    await userEvent.click(calendarToggle);
+    expect(calendarToggle).toBeChecked();
+    expect(screen.getByRole("textbox", { name: /날짜를/ })).toBeInTheDocument();
+  });
 
   it("input을 모두 입력하지 않으면 에러메세지가 나온다", async () => {
     const { options, addBtn, price, desc, handleSubmit } = renderComponent(["김영식", "김민우"]);
