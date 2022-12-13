@@ -34,10 +34,11 @@ describe("calender input", () => {
     expect(calendar).toBeInTheDocument();
   });
 
-  it("when date button click, called onChange function", async () => {
+  it("when date button click, called with select Date", async () => {
     const input = screen.getByRole("textbox");
     await userEvent.click(input);
     await userEvent.click(screen.getByText("15"));
-    expect(handleChange).toBeCalled();
+
+    expect(handleChange).toBeCalledWith(new Date(date.getFullYear(), date.getMonth(), 15));
   });
 });
