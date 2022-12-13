@@ -1513,6 +1513,13 @@
     "@radix-ui/react-scroll-area" "1.0.2"
     react-textarea-autosize "8.3.4"
 
+"@mantine/dates@^5.9.4":
+  version "5.9.4"
+  resolved "https://registry.yarnpkg.com/@mantine/dates/-/dates-5.9.4.tgz#7a43e268a7a5c219eb55e5bb9e8f13743e16f86f"
+  integrity sha512-JgOQnc2cblzxsKl3m/Ygv1vIE49ObtioQTgRiAd8GXlZH0Urb81NYKiJoKHV5uJvLIIBkAYWVTs7PKc73dXs+Q==
+  dependencies:
+    "@mantine/utils" "5.9.4"
+
 "@mantine/hooks@^5.9.2":
   version "5.9.2"
   resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-5.9.2.tgz#803df4d4f0b77bda14141b96c0a910f3b4cec52a"
@@ -1546,6 +1553,11 @@
   version "5.9.2"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.9.2.tgz#d8e3b980de6cd5f7059b149c12d6ce50445b11ba"
   integrity sha512-dvqqbdrK/nw4stFCXRCn38Ru12RqdWv8uzbywP5dQVCyTw8pW/Cq+T7YCWpbkFcKFea9UhOrPhBygJcjc13FgA==
+
+"@mantine/utils@5.9.4":
+  version "5.9.4"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.9.4.tgz#3d3b7646eabaffe6cb4b02083317cc8f9565d03e"
+  integrity sha512-NZAn30jjF52X+MFnkO3oaVgo2LPx3o/QxYlcuMkRBUTZALEXvQgrD0OyGDRgEXnfMdmkBP6rk3Pol6yXXEwU6w==
 
 "@motionone/animation@^10.12.0":
   version "10.15.1"
@@ -2654,6 +2666,11 @@ data-urls@^3.0.2:
     abab "^2.0.6"
     whatwg-mimetype "^3.0.0"
     whatwg-url "^11.0.0"
+
+dayjs@^1.11.7:
+  version "1.11.7"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.7.tgz#4b296922642f70999544d1144a2c25730fce63e2"
+  integrity sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==
 
 debug@4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.4:
   version "4.3.4"
