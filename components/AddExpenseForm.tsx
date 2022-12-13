@@ -1,10 +1,12 @@
 import { NativeSelect, TextInput, NumberInput, Switch, Button, Box } from "@mantine/core";
 import React, { FormEventHandler, ReactNode, useState } from "react";
+import CalendarInput from "./CalendarInput";
 
 interface PayInfo {
   payer: string;
   price: number;
   desc?: string;
+  date?: Date;
 }
 interface AddExpenseFormProps {
   members: string[];
@@ -22,7 +24,9 @@ export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProp
   const [payer, setPayer] = useState<string>("0");
   const [price, setPrice] = useState<number>(0);
   const [desc, setDesc] = useState("");
+  const [date, setDate] = useState<Date>();
   const [isCalendar, setIsCalender] = useState(false);
+
   const optionsData = members.map((member, index) => ({ value: (index + 1).toString(), label: member }));
 
   const isErrorPayer = errorCase.payer(payer);
@@ -33,16 +37,26 @@ export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProp
     if (isErrorPayer || isErrorPrice) {
       return;
     }
-    onSubmit({
-      payer: members[Number(payer) - 1],
-      price,
-      desc,
-    });
+
+    isCalendar
+      ? onSubmit({
+          payer: members[Number(payer) - 1],
+          price,
+          desc,
+          date,
+        })
+      : onSubmit({
+          payer: members[Number(payer) - 1],
+          price,
+          desc,
+        });
   };
 
   return (
     <Box component="form" onSubmit={handleSubmit}>
       <Switch checked={isCalendar} onChange={(e) => setIsCalender(e.currentTarget.checked)} />
+      {isCalendar && <CalendarInput value={date} onChange={(value) => setDate(value)} isError={!date} />}
+
       <NativeSelect
         value={payer}
         onChange={(event) => setPayer(event.currentTarget.value)}
@@ -54,12 +68,15 @@ export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProp
         label="Price"
         name="price"
         hideControls
+        step={100}
         parser={(value) => value?.replace(/\$\s?|(,*)/g, "")}
         formatter={(value) =>
           !Number.isNaN(parseFloat(value!)) ? `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "$ "
         }
         error={isErrorPrice}
-        onChange={(val) => setPrice(val ?? 0)}
+        onChange={(val) => {
+          setPrice(val ?? 0);
+        }}
       />
       <TextInput
         value={desc}

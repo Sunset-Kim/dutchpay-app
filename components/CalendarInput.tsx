@@ -6,9 +6,12 @@ import { useState } from "react";
 interface CalendarInputProps {
   value?: Date;
   onChange: (value: Date) => void;
+  required?: boolean;
+  isError?: boolean;
+  errorMessage?: string;
 }
 
-export default function CalendarInput({ value, onChange }: CalendarInputProps) {
+export default function CalendarInput({ value, onChange, isError, errorMessage }: CalendarInputProps) {
   const [isModal, setIsModal] = useState(false);
   const closeModal = () => setIsModal(false);
   const handleChange = (value: Date) => {
@@ -21,10 +24,14 @@ export default function CalendarInput({ value, onChange }: CalendarInputProps) {
   return (
     <>
       <TextInput
-        label="날짜를 선택하세요"
-        value={value instanceof Date ? dayjs(value).format("YYYY-MM-DD") : undefined}
+        label="날짜선택"
+        value={value instanceof Date ? dayjs(value).format("YYYY-MM-DD") : ""}
+        placeholder="날짜를 선택하세요"
         onClick={toggleModal}
         name="calendar"
+        onChange={(e) => e.preventDefault()}
+        error={isError ? "날짜가 입력되지 않았습니다" : false}
+        readOnly
       />
       {isModal && (
         <Card w="fit-content" p="md" mt={10} shadow="sm" radius="sm" withBorder>
