@@ -10,9 +10,7 @@ object AddMembers {
 }
 object ExpenseMain {
   groupName: string
-  members: string
-
-  'TODO: state
+  members: string[]
 }
 
 object CenteredOverlayForm {
@@ -36,10 +34,18 @@ object AddExpenseForm {
   state price: number
   state date: Date
 }
+
 object ExpenseSummary {
   expenses: ExpenseInfo[]
   members: string[]
 }
+
+object ExpenseChart {
+  props total: number
+  props data: ExpensePart[]
+}
+
+
 object ExpenseList {
   list: ExpenseInfo[]
 }
@@ -58,12 +64,13 @@ CreateGroup *-- CenteredOverlayForm
 AddMembers *-- CenteredOverlayForm
 
 ExpenseMain *-- AddExpenseForm
-ExpenseMain *-- ExpenseSummary
-ExpenseMain *-- ExpenseList
-
 AddExpenseForm *-- CalenderInput
 
-ExpenseList *-- CentertedOverlay
+ExpenseMain *-- ExpenseSummary
+ExpenseSummary *-- ExpenseChart
 
-ExpenseItem *-- ExpenseList
+ExpenseMain *-- ExpenseList
+CentertedOverlay *-- ExpenseList
+ExpenseList *-- ExpenseItem
+
 @enduml
