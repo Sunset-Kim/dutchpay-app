@@ -12,7 +12,7 @@ describe("convertExpenseListToMap", () => {
 
     const result = convertExpenseListToMap(DATA, total);
 
-    expect(result).toEqual([
+    expect([...result.values()]).toEqual([
       { payer: "a", price: 15000, part: 75 },
       { payer: "b", price: 5000, part: 25 },
     ]);
