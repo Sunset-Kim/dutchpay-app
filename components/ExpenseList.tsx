@@ -1,4 +1,4 @@
-import { ActionIcon, Badge, Group, ScrollArea, Table, Text } from "@mantine/core";
+import { ActionIcon, Group, ScrollArea, Table, Text, Paper } from "@mantine/core";
 import { ExpenseInfo } from "../types/Expense.type";
 import dayjs from "dayjs";
 import NoContent from "./NoContent";
@@ -17,7 +17,7 @@ export default function ExpenseList({ list }: ExpenseListProps) {
   const rows = list.map((expense, i) => {
     const { date, desc, payer, price } = expense;
     return (
-      <tr key={`expense${i}`}>
+      <tr key={`expense${i}`} data-testid="expenseItem">
         <td>
           <Text>{date ? dayjs(date).format("YYYY-MM-DD") : "-"}</Text>
         </td>
@@ -45,7 +45,7 @@ export default function ExpenseList({ list }: ExpenseListProps) {
   });
 
   return (
-    <ScrollArea>
+    <Paper component={ScrollArea} withBorder shadow={"sm"} p={20} h={700}>
       <Table verticalSpacing="sm" align="center">
         <thead>
           <tr>
@@ -58,6 +58,6 @@ export default function ExpenseList({ list }: ExpenseListProps) {
         </thead>
         <tbody>{rows}</tbody>
       </Table>
-    </ScrollArea>
+    </Paper>
   );
 }
