@@ -40,9 +40,14 @@ object ExpenseSummary {
   members: string[]
 }
 
+object ExpenseResult {
+  props total: number
+  props data: ExpenseSegment[]
+}
+
 object ExpenseChart {
   props total: number
-  props data: ExpensePart[]
+  props data: ExpenseSegment[]
 }
 
 
@@ -68,6 +73,7 @@ AddExpenseForm *-- CalenderInput
 
 ExpenseMain *-- ExpenseSummary
 ExpenseSummary *-- ExpenseChart
+ExpenseSummary *-- ExpenseResult
 
 ExpenseMain *-- ExpenseList
 CentertedOverlay *-- ExpenseList
