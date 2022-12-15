@@ -48,7 +48,7 @@ export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProp
   };
 
   return (
-    <Card w="full" shadow={"md"} p="lg" maw={360} mx="auto">
+    <Card w="full" shadow={"sm"} p="lg" withBorder>
       <Card.Section withBorder inheritPadding py="xs" sx={{ justifyContent: "flex-end" }}>
         <Group position="right">
           <Switch

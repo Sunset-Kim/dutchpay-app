@@ -1,10 +1,10 @@
-import { Button, CloseButton, Group, Paper, Text } from "@mantine/core";
+import { Button, CloseButton, Group, Paper, PaperProps, Text } from "@mantine/core";
 
-interface NoContentProps extends React.PropsWithChildren {}
+type NoContentProps = PaperProps & React.PropsWithChildren;
 
-export default function NoContent({ children }: NoContentProps) {
+export default function NoContent({ children, ...props }: NoContentProps) {
   return (
-    <Paper withBorder p="lg" radius="md" shadow="md" maw={340} mx="auto">
+    <Paper withBorder p="lg" radius="md" shadow="md" {...props}>
       <Group position="apart" mb="xs">
         <Text size="md" weight={500}>
           보여줄 내용이 없어요
