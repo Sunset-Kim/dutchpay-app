@@ -8,8 +8,12 @@ const errorMessage: Record<Exclude<ErrorCategories, null>, string> = {
   empty: "멤버이름은 필수 입력값 입니다",
 };
 
-export default function AddMembers() {
-  const [members, setMembers] = useState<string[]>([]);
+interface AddMemberProps {
+  members: string[];
+  onSubmit: (value: string) => void;
+}
+
+export default function AddMembers({ members, onSubmit }: AddMemberProps) {
   const [value, setValue] = useState<string>("");
   const [error, setError] = useState<ErrorCategories>(null);
 
@@ -28,7 +32,7 @@ export default function AddMembers() {
     const errorType = checkValidate(value);
     setError(errorType);
     if (errorType === null) {
-      setMembers([...members, value]);
+      onSubmit(value);
       console.log("asdf");
       setValue("");
     }
@@ -37,7 +41,7 @@ export default function AddMembers() {
   return (
     <Box as="form" onSubmit={handleSubmit}>
       <Stack direction="row">
-        {members.length !== 0 && members.map((member) => <Badge key={member}>{member}</Badge>)}
+        {members && members.length !== 0 && members.map((member) => <Badge key={member}>{member}</Badge>)}
       </Stack>
       <FormControl>
         <FormLabel>멤버입력</FormLabel>

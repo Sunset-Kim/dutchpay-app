@@ -2,7 +2,7 @@ import { Box, Button, FormControl, FormHelperText, FormLabel, Input, Text, VStac
 import { ChangeEventHandler, FormEventHandler, MouseEventHandler, useState } from "react";
 
 interface CreateGroupProps {
-  onSubmit: () => void;
+  onSubmit: (value: string) => void;
 }
 
 export default function CreateGroup({ onSubmit }: CreateGroupProps) {
@@ -11,11 +11,12 @@ export default function CreateGroup({ onSubmit }: CreateGroupProps) {
   const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => setValue(event.target.value);
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
+
     if (value.trim() === "") {
       setIsError(true);
       return;
     }
-    onSubmit();
+    onSubmit(value);
   };
 
   return (

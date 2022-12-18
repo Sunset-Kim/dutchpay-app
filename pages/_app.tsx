@@ -4,6 +4,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import Grid from "../components/layouts/Grid";
 import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
+import GroupProvider from "../context/GroupContextProvider";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -21,9 +22,11 @@ export default function App({ Component, pageProps }: AppProps) {
         }}
       >
         <ChakraProvider>
-          <Grid>
-            <Component {...pageProps} />
-          </Grid>
+          <GroupProvider>
+            <Grid>
+              <Component {...pageProps} />
+            </Grid>
+          </GroupProvider>
         </ChakraProvider>
       </MantineProvider>
     </>
