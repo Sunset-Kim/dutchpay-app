@@ -6,55 +6,67 @@ interface Transaction {
   amount: number;
 }
 
-export function getMinTransaction(list: Pick<ExpenseSegment, "payer" | "price">[]) {
+export function getMinTransaction(list: Pick<ExpenseSegment, "payer" | "price">[], members: string[]) {
+  const tarnsactionList: Transaction[] = [];
   const total = list.reduce((total, segment) => (total += segment.price), 0);
-  const perAmount = total / list.length;
+  if (total === 0) return [];
 
-  const calcedList = list
-    .map((segment) => {
-      const { payer, price } = segment;
-      return {
-        payer,
-        diff: price - perAmount,
-      };
-    })
+  const perAmount = total / members.length;
+  const memberToPay = new Map();
+
+  members.forEach((member) => {
+    memberToPay.set(member, perAmount);
+  });
+
+  list.forEach((segment) => {
+    const { payer, price } = segment;
+    if (memberToPay.has(payer)) {
+      memberToPay.set(payer, memberToPay.get(payer) - price);
+    }
+  });
+
+  const payList = [...memberToPay.entries()]
+    .map(([key, value]) => ({
+      payer: key,
+      diff: value,
+    }))
     .sort((a, b) => a.diff - b.diff);
 
-  const tarnsactionList: Transaction[] = [];
+  console.log(payList);
 
   let left = 0;
-  let right = calcedList.length - 1;
+  let right = payList.length - 1;
 
   while (left < right) {
-    if (calcedList[left].diff === 0) {
+    if (payList[left].diff === 0) {
       left++;
-    } else if (calcedList[right].diff === 0) {
+    } else if (payList[right].diff === 0) {
       right--;
     } else {
-      const sender = calcedList[left];
-      const receiver = calcedList[right];
-      const senderAmount = Math.abs(sender.diff);
+      const receiver = payList[left];
+      const sender = payList[right];
       const receiverAmount = Math.abs(receiver.diff);
+      const senderAmount = Math.abs(sender.diff);
 
-      if (senderAmount > receiverAmount) {
+      if (receiverAmount > senderAmount) {
         tarnsactionList.push({
           receiver: receiver.payer,
           sender: sender.payer,
-          amount: receiverAmount,
+          amount: senderAmount,
         });
 
-        sender.diff -= receiverAmount;
-        receiver.diff = 0;
+        sender.diff = 0;
+        receiver.diff -= sender.diff;
 
         right--;
       } else {
         tarnsactionList.push({
           receiver: receiver.payer,
           sender: sender.payer,
-          amount: senderAmount,
+          amount: receiverAmount,
         });
-        receiver.diff -= senderAmount;
-        sender.diff = 0;
+        receiver.diff = 0;
+        sender.diff -= receiverAmount;
 
         left++;
       }
