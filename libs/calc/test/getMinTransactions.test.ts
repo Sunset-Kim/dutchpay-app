@@ -1,6 +1,17 @@
 import { getMinTransaction } from "../getMinTransactions";
 
 describe("getMinTransactions", () => {
+  it("1명만 결제하고 4명이 나눠내기", () => {
+    const list = [
+      {
+        payer: "a",
+        price: 10000,
+      },
+    ];
+    const result = getMinTransaction(list, ["a", "b", "c", "d"]);
+
+    expect(result).toHaveLength(3);
+  });
   it("sholud return 2 transactions", () => {
     const list = [
       {
@@ -20,7 +31,7 @@ describe("getMinTransactions", () => {
         price: 40000,
       },
     ];
-    const result = getMinTransaction(list);
+    const result = getMinTransaction(list, ["a", "b", "c", "d"]);
 
     expect(result).toHaveLength(2);
   });
@@ -44,7 +55,7 @@ describe("getMinTransactions", () => {
         price: 10000,
       },
     ];
-    const result = getMinTransaction(list);
+    const result = getMinTransaction(list, ["a", "b", "c", "d"]);
 
     expect(result).toHaveLength(0);
   });
