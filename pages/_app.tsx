@@ -1,10 +1,9 @@
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
-import Grid from "../components/layouts/Grid";
-import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
+import type { AppProps } from "next/app";
+import Head from "next/head";
+import Grid from "../components/layouts/Grid";
 import GroupProvider from "../context/GroupContextProvider";
+import "../styles/globals.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -21,13 +20,11 @@ export default function App({ Component, pageProps }: AppProps) {
           colorScheme: "light",
         }}
       >
-        <ChakraProvider>
-          <GroupProvider>
-            <Grid>
-              <Component {...pageProps} />
-            </Grid>
-          </GroupProvider>
-        </ChakraProvider>
+        <GroupProvider>
+          <Grid>
+            <Component {...pageProps} />
+          </Grid>
+        </GroupProvider>
       </MantineProvider>
     </>
   );

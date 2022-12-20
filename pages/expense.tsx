@@ -1,23 +1,27 @@
-import { GridItem } from "@chakra-ui/react";
-import { Box, Stack } from "@mantine/core";
+import { Grid, Stack } from "@mantine/core";
+import { useState } from "react";
 import AddExpenseForm from "../components/AddExpenseForm";
 import ExpenseList from "../components/ExpenseList";
 import ExpenseSummary from "../components/ExpenseSummary";
-import { EXPENSE_INFO_LIST } from "../fixture/expense";
+import useGroup from "../hooks/useGroup";
+import { ExpenseInfo } from "../types/Expense.type";
 
 export default function ExpenseMain() {
-  const MEMBERS = ["김영식"];
+  const { members, name } = useGroup();
+  const [expenseList, setExpenseList] = useState<ExpenseInfo[]>([]);
+  const addList = (info: ExpenseInfo) => setExpenseList([...expenseList, info]);
+
   return (
     <>
-      <GridItem colSpan={4}>
+      <Grid.Col span={4}>
         <Stack w="full">
-          <AddExpenseForm members={MEMBERS} onSubmit={console.log} />
-          <ExpenseSummary data={EXPENSE_INFO_LIST} />
+          <AddExpenseForm members={members} onSubmit={addList} />
+          <ExpenseSummary data={expenseList} />
         </Stack>
-      </GridItem>
-      <GridItem colSpan={8}>
-        <ExpenseList list={EXPENSE_INFO_LIST} />
-      </GridItem>
+      </Grid.Col>
+      <Grid.Col span={8}>
+        <ExpenseList list={expenseList} />
+      </Grid.Col>
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormHelperText, FormLabel, Input, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Group, Input } from "@mantine/core";
 import { ChangeEventHandler, FormEventHandler, MouseEventHandler, useState } from "react";
 
 interface CreateGroupProps {
@@ -20,22 +20,28 @@ export default function CreateGroup({ onSubmit }: CreateGroupProps) {
   };
 
   return (
-    <Box h="full" w="full" as="form" onSubmit={handleSubmit}>
-      <VStack w="full" h="full" justifyContent={"space-between"}>
-        <FormControl>
-          <FormLabel>그룹명</FormLabel>
-          <Input type="text" value={value} onChange={handleChange} placeholder="ex) 2022 크리스마스 여행경비" />
-          {isError && (
-            <FormHelperText data-isvalid={isError} role="alertdialog">
-              그룹명은 필수입력값 입니다
-            </FormHelperText>
-          )}
-        </FormControl>
-
-        <Button w="full" type="submit" colorScheme="orange">
-          저장
-        </Button>
-      </VStack>
+    <Box h="full" w="full" component="form" onSubmit={handleSubmit}>
+      <Input.Wrapper label="그룹명" required>
+        <Group spacing={0} mb="xs" grow>
+          <Input
+            type="text"
+            value={value}
+            onChange={handleChange}
+            placeholder="ex) 2022 크리스마스 여행경비"
+            sx={{
+              flex: 1,
+            }}
+          />
+          <Button w="full" type="submit" sx={{ flex: 0 }}>
+            저장
+          </Button>
+        </Group>
+        {isError && (
+          <Input.Error data-isvalid={isError} role="alertdialog">
+            그룹명은 필수입력값 입니다
+          </Input.Error>
+        )}
+      </Input.Wrapper>
     </Box>
   );
 }

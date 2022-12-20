@@ -1,4 +1,4 @@
-import { Button, CloseButton, Group, Paper, PaperProps, Text } from "@mantine/core";
+import { Group, Paper, PaperProps, Text } from "@mantine/core";
 
 type NoContentProps = PaperProps & React.PropsWithChildren;
 
