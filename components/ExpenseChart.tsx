@@ -1,9 +1,20 @@
-import { Box, createStyles, Group, MantineColor, Paper, Progress, SimpleGrid, Text, ThemeIcon } from "@mantine/core";
-import { EXPENSE_INFO_LIST } from "../fixture/expense";
+import {
+  Box,
+  createStyles,
+  Divider,
+  Group,
+  MantineColor,
+  Paper,
+  Progress,
+  SimpleGrid,
+  Stack,
+  Text,
+  ThemeIcon,
+} from "@mantine/core";
+
 import { IconArrowUpRight, IconCash } from "@tabler/icons";
 import { ExpenseSegment, ProgressSection } from "../types/ExpenseSummary.type";
-import { ExpenseInfo } from "../types/Expense.type";
-import { convertExpenseListToMap } from "../libs/converter/convertExpenseListToMap";
+
 import { formatKRWCurrency } from "../libs/formater";
 
 interface ExpenseChartProps {
@@ -42,6 +53,7 @@ const useStyles = createStyles((theme) => ({
 export default function ExpenseChart({ data, total }: ExpenseChartProps) {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
+  const perPrice = total / data.length;
   const secitons: ProgressSection[] = data.map((item, i) => {
     const { payer, part } = item;
     return { value: part, label: payer, color: COLORS[i % COLORS.length] };
@@ -49,23 +61,25 @@ export default function ExpenseChart({ data, total }: ExpenseChartProps) {
 
   const { classes } = useStyles();
 
-  const descriptions = data.map((segment) => (
+  const descriptions = data.map((segment, i) => (
     <Box key={segment.payer} className={classes.segment}>
       <Text transform="uppercase" size="xs" color="dimmed" weight={700}>
         {segment.payer}
       </Text>
 
       <Group position="apart" align="flex-end" spacing={0}>
-        <Text weight={700}>{segment.price}</Text>
+        <Text weight={700}>{formatKRWCurrency(segment.price)}</Text>
         <Text weight={700} size="sm" className={classes.segmentCount}>
           {segment.part.toFixed(2)}%
         </Text>
+        <Divider color={COLORS[i % COLORS.length]} />
       </Group>
     </Box>
   ));
+
   return (
     <Paper withBorder p="md" radius="md">
-      <Group position="apart">
+      <Group position="apart" py="sm">
         <Group align="center" spacing="xs">
           <ThemeIcon size={"sm"}>
             <IconCash />
@@ -80,14 +94,23 @@ export default function ExpenseChart({ data, total }: ExpenseChartProps) {
         </Text>
       </Group>
 
-      <Text color="dimmed" size="sm">
-        최종정산 금액에서 가장 많이 결제한 사람의 비용을 보여줍니다
-      </Text>
+      <Divider />
 
-      <Progress sections={secitons} size={34} classNames={{ label: classes.progressLabel }} mt={40} />
-      <SimpleGrid cols={3} breakpoints={[{ maxWidth: "xs", cols: 1 }]} mt="xl">
-        {descriptions}
-      </SimpleGrid>
+      <Box py="xs">
+        {data.length !== 0 && (
+          <Text size="sm">{`이번에 1인당 결제하실 금액은 ${formatKRWCurrency(perPrice)} 입니다.`}</Text>
+        )}
+
+        <Stack spacing={0} mt="md">
+          <Progress sections={secitons} size={50} mb="sm" classNames={{ label: classes.progressLabel }} />
+          <SimpleGrid mb="sm" cols={3} breakpoints={[{ maxWidth: "xs", cols: 1 }]}>
+            {descriptions}
+          </SimpleGrid>
+          <Text color="dimmed" size="xs">
+            * 위의 차트는 최종정산 금액에서 가장 많이 결제한 사람의 비용을 보여줍니다
+          </Text>
+        </Stack>
+      </Box>
     </Paper>
   );
 }
