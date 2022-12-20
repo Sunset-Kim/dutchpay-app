@@ -1,4 +1,4 @@
-import { Badge, Box, Button, FormControl, FormHelperText, FormLabel, Input, Stack } from "@chakra-ui/react";
+import { Badge, Box, Button, Group, Input } from "@mantine/core";
 import { FormEventHandler, MouseEventHandler, useState } from "react";
 
 type ErrorCategories = "duplicate" | "empty" | null;
@@ -33,23 +33,30 @@ export default function AddMembers({ members, onSubmit }: AddMemberProps) {
     setError(errorType);
     if (errorType === null) {
       onSubmit(value);
-      console.log("asdf");
       setValue("");
     }
   };
 
   return (
-    <Box as="form" onSubmit={handleSubmit}>
-      <Stack direction="row">
-        {members && members.length !== 0 && members.map((member) => <Badge key={member}>{member}</Badge>)}
-      </Stack>
-      <FormControl>
-        <FormLabel>멤버입력</FormLabel>
-        <Input type="text" placeholder="ex) 김영식" value={value} onChange={(e) => setValue(e.target.value)} />
-        {error && <FormHelperText role="alertdialog">{errorMessage[error]}</FormHelperText>}
-      </FormControl>
+    <Box component="form" onSubmit={handleSubmit}>
+      <Input.Wrapper required label="멤버입력">
+        <Group spacing={0} grow>
+          <Input type="text" placeholder="ex) 김영식" value={value} onChange={(e) => setValue(e.target.value)} />
+          <Button
+            type="submit"
+            sx={{
+              flexGrow: 0,
+            }}
+          >
+            추가
+          </Button>
+        </Group>
 
-      <Button type="submit">추가</Button>
+        {error && <Input.Error role="alertdialog">{errorMessage[error]}</Input.Error>}
+      </Input.Wrapper>
+      <Group mt="sm" spacing={"xs"}>
+        {members && members.length !== 0 && members.map((member) => <Badge key={member}>{member}</Badge>)}
+      </Group>
     </Box>
   );
 }
