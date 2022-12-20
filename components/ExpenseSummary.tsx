@@ -18,7 +18,7 @@ export default function ExpenseSummary({ data }: ExpenseSummaryProps) {
   return (
     <Stack>
       <ExpenseChart data={[...info.values()].sort((a, b) => b.price - a.price)} total={totalPrice} />
-      <ExpenseResult data={[...info.values()].sort((a, b) => b.price - a.price)} total={totalPrice} members={members} />
+      <ExpenseResult data={[...info.values()].sort((a, b) => b.price - a.price)} members={members} />
     </Stack>
   );
 }

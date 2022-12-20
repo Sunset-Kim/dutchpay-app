@@ -1,16 +1,14 @@
-import { Box, Divider, Group, Paper, Text } from "@mantine/core";
-import React from "react";
+import { Box, Divider, Paper, Text } from "@mantine/core";
 import { getMinTransaction } from "../libs/calc/getMinTransactions";
 import { formatKRWCurrency } from "../libs/formater";
 import { ExpenseSegment } from "../types/ExpenseSummary.type";
 
 interface ExpenseResultProps {
   data: ExpenseSegment[];
-  total: number;
   members: string[];
 }
 
-export default function ExpenseResult({ data, total, members }: ExpenseResultProps) {
+export default function ExpenseResult({ data, members }: ExpenseResultProps) {
   const transactions = getMinTransaction(data, members);
 
   if (transactions.length === 0) {
