@@ -49,16 +49,16 @@ const default_data_without_amount = [
 ];
 
 const renderComponent = (data: ExpenseSegment[]) => {
-  render(<ExpenseResult data={data} total={default_total} />);
+  render(<ExpenseResult data={data} total={default_total} members={["a", "b", "c", "d"]} />);
 };
 
 describe("ExpenseResult", () => {
   it("정산결과를 렌더링한다", () => {
     renderComponent(default_data);
 
-    expect(screen.getByText(/17,500를 송금해야합니다/));
-    expect(screen.getByText(/5,000를 송금해야합니다/));
-    expect(screen.getByText(/2,500를 송금해야합니다/));
+    expect(screen.getByText(/17,500를 송금해야합니다/)).toBeInTheDocument();
+    expect(screen.getAllByText(/7,500를 송금해야합니다/)).toHaveLength(2);
+    expect(screen.getByText(/2,500를 송금해야합니다/)).toBeInTheDocument();
   });
 
   it("정산결과가 동일하면 정산내용이 없다는 텍스트를 렌더링 한다", () => {
