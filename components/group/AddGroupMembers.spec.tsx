@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import AddMembers from "./AddMembers";
 import userEvent from "@testing-library/user-event";
+import AddMembers from "./AddGroupMembers";
 
 const handleSubmit = jest.fn();
 const EMPTY_MEMBERS: string[] = [];

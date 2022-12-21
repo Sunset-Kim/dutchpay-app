@@ -2,7 +2,8 @@ import { MantineProvider } from "@mantine/core";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Layout from "../components/layouts/Layout";
-import GroupProvider from "../context/GroupContextProvider";
+import GroupProvider from "../context/group/GroupContextProvider";
+
 import "../styles/globals.css";
 
 export default function App({ Component, pageProps }: AppProps) {

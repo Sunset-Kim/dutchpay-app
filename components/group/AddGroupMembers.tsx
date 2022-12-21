@@ -1,5 +1,5 @@
 import { Badge, Box, Button, Group, Input } from "@mantine/core";
-import { FormEventHandler, MouseEventHandler, useState } from "react";
+import { FormEventHandler, useState } from "react";
 
 type ErrorCategories = "duplicate" | "empty" | null;
 

@@ -1,5 +1,5 @@
 import { Box, Button, Group, Input } from "@mantine/core";
-import { ChangeEventHandler, FormEventHandler, MouseEventHandler, useState } from "react";
+import { ChangeEventHandler, FormEventHandler, useState } from "react";
 
 interface CreateGroupProps {
   onSubmit: (value: string) => void;

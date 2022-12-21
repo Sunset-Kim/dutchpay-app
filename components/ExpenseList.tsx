@@ -1,8 +1,8 @@
-import { ActionIcon, Group, ScrollArea, Table, Text, Paper } from "@mantine/core";
-import { ExpenseInfo } from "../types/Expense.type";
-import dayjs from "dayjs";
-import NoContent from "./NoContent";
+import { ActionIcon, Group, Paper, ScrollArea, Table, Text } from "@mantine/core";
 import { IconPencil, IconTrash } from "@tabler/icons";
+import dayjs from "dayjs";
+import { ExpenseInfo } from "../types/Expense.type";
+import NoContent from "./common/NoContent";
 import Price from "./Price";
 
 interface ExpenseListProps {
