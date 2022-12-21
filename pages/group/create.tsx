@@ -42,6 +42,10 @@ export default function GroupCreate() {
     return false;
   };
 
+  const addMembers = (value: string | string[]) => {
+    Array.isArray(value) ? setMembers((prev) => [...prev, ...value]) : setMembers((prev) => [...prev, value]);
+  };
+
   return (
     <Grid.Col>
       <Stack spacing={0}>
@@ -59,7 +63,11 @@ export default function GroupCreate() {
           </Stepper.Step>
 
           <Stepper.Step label="STEP. 02" description="그룹멤버를 등록해주세요" allowStepSelect={!!name}>
-            <AddMembers members={members} onSubmit={(value) => setMembers((prev) => [...prev, value])} />
+            <AddMembers
+              members={members}
+              onSubmit={addMembers}
+              onDelete={(name) => setMembers((prev) => prev.filter((members) => members !== name))}
+            />
           </Stepper.Step>
 
           <Stepper.Completed>
