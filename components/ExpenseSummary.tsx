@@ -19,7 +19,7 @@ export default function ExpenseSummary({ data }: ExpenseSummaryProps) {
   const container = useRef<HTMLDivElement>(null);
 
   return (
-    <>
+    <Stack>
       <Stack ref={container}>
         <ExpenseChart data={[...info.values()].sort((a, b) => b.price - a.price)} total={totalPrice} />
         <ExpenseResult data={[...info.values()].sort((a, b) => b.price - a.price)} members={members} />
@@ -29,6 +29,6 @@ export default function ExpenseSummary({ data }: ExpenseSummaryProps) {
           이미지로 내보내기
         </Button>
       </Group>
-    </>
+    </Stack>
   );
 }

@@ -1,4 +1,4 @@
-import { Grid, Stack } from "@mantine/core";
+import { Grid } from "@mantine/core";
 import { useState } from "react";
 import AddExpenseForm from "../components/AddExpenseForm";
 import ExpenseList from "../components/ExpenseList";
@@ -13,13 +13,11 @@ export default function ExpenseMain() {
 
   return (
     <>
-      <Grid.Col span={4}>
-        <Stack w="full">
-          <AddExpenseForm members={members} onSubmit={addList} />
-          <ExpenseSummary data={expenseList} />
-        </Stack>
+      <Grid.Col span={12} md={6} order={2} orderMd={1}>
+        <AddExpenseForm members={members} onSubmit={addList} />
+        <ExpenseSummary data={expenseList} />
       </Grid.Col>
-      <Grid.Col span={8}>
+      <Grid.Col span={12} md={6} order={1} orderMd={2}>
         <ExpenseList list={expenseList} />
       </Grid.Col>
     </>

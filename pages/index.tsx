@@ -55,9 +55,9 @@ export default function Home() {
       <Grid.Col span={12}>
         <Stepper mb="xl" active={active} onStepClick={setActive} breakpoint="sm">
           <Stepper.Step label="STEP. 01" description="그룹명을 입력해주세요">
-            <Text>그룹명을 입력하세요</Text>
+            {name ? <Text>{name} 맞나요?</Text> : <Text>그룹명을 입력하세요</Text>}
+
             <CreateGroup onSubmit={handleSetGroupName} />
-            {name && <Text>{`작성된 그룹명: ${name}`}</Text>}
           </Stepper.Step>
 
           <Stepper.Step label="STEP. 02" description="그룹멤버를 등록해주세요">
