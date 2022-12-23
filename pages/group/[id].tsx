@@ -28,11 +28,11 @@ export default function ExpenseMain() {
 
   return (
     <>
-      <Grid.Col span={12} md={6} order={2} orderMd={1}>
+      <Grid.Col span={12} md={5} order={2} orderMd={1}>
         <AddExpenseForm group={group} onSubmit={addList} />
         <ExpenseSummary group={group} expenseList={expenseList} />
       </Grid.Col>
-      <Grid.Col span={12} md={6} order={1} orderMd={2}>
+      <Grid.Col span={12} md={7} order={1} orderMd={2}>
         <ExpenseList expenseList={expenseList} />
       </Grid.Col>
     </>

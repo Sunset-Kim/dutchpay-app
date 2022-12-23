@@ -4,6 +4,7 @@ import { ExpenseInfo } from "../types/Expense.type";
 import ExpenseList from "./ExpenseList";
 
 beforeAll(() => {
+  window.HTMLElement.prototype.scrollTo = function () {};
   global.ResizeObserver = class ResizeObserver {
     observe() {
       // do nothing

@@ -1,6 +1,7 @@
-import { ActionIcon, Group, Paper, ScrollArea, Table, Text } from "@mantine/core";
+import { ActionIcon, Group, ScrollArea, Table, Text } from "@mantine/core";
 import { IconPencil, IconTrash } from "@tabler/icons";
 import dayjs from "dayjs";
+import { useEffect, useRef } from "react";
 import { ExpenseInfo } from "../types/Expense.type";
 import NoContent from "./common/NoContent";
 import Price from "./Price";
@@ -10,6 +11,14 @@ interface ExpenseListProps {
 }
 
 export default function ExpenseList({ expenseList }: ExpenseListProps) {
+  const tableRef = useRef<HTMLTableElement>(null);
+  const viewport = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!viewport.current || !tableRef.current) return;
+    viewport.current.scrollTo({ top: tableRef.current.clientHeight, behavior: "smooth" });
+  }, [expenseList]);
+
   if (expenseList.length === 0) {
     return <NoContent>정산정보 입력창에서 정산정보를 추가해보세요!</NoContent>;
   }
@@ -19,7 +28,7 @@ export default function ExpenseList({ expenseList }: ExpenseListProps) {
     return (
       <tr key={`expense${i}`} data-testid="expenseItem">
         <td>
-          <Text>{date ? dayjs(date).format("YYYY-MM-DD") : "-"}</Text>
+          <Text>{date ? dayjs(date).format("MM.DD") : "-"}</Text>
         </td>
         <td>
           <Text size={"sm"}>{payer}</Text>
@@ -28,7 +37,9 @@ export default function ExpenseList({ expenseList }: ExpenseListProps) {
           <Price value={price} />
         </td>
         <td>
-          <Text align="left">{desc ?? "-"}</Text>
+          <Text lineClamp={1} align="left" w={100}>
+            {desc ?? "-"}
+          </Text>
         </td>
         <td>
           <Group spacing={0} position="right">
@@ -45,8 +56,8 @@ export default function ExpenseList({ expenseList }: ExpenseListProps) {
   });
 
   return (
-    <Paper component={ScrollArea} withBorder shadow={"sm"} p={20} h={700}>
-      <Table verticalSpacing="sm" align="center">
+    <ScrollArea h={380} viewportRef={viewport}>
+      <Table striped highlightOnHover verticalSpacing="sm" align="center" ref={tableRef}>
         <thead>
           <tr>
             <th>날짜</th>
@@ -58,6 +69,6 @@ export default function ExpenseList({ expenseList }: ExpenseListProps) {
         </thead>
         <tbody>{rows}</tbody>
       </Table>
-    </Paper>
+    </ScrollArea>
   );
 }
