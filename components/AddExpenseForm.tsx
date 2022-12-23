@@ -1,10 +1,11 @@
-import { NativeSelect, TextInput, NumberInput, Switch, Button, Box, Card, Stack, Group } from "@mantine/core";
-import React, { FormEventHandler, ReactNode, useState } from "react";
+import { Button, Card, Group, NativeSelect, NumberInput, Stack, Switch, TextInput } from "@mantine/core";
+import { FormEventHandler, ReactNode, useState } from "react";
 import { ExpenseInfo } from "../types/Expense.type";
+import { IGroup } from "../types/Group.type";
 import CalendarInput from "./CalendarInput";
 
 interface AddExpenseFormProps {
-  members: string[];
+  group: IGroup;
   onSubmit: (param: ExpenseInfo) => void;
 }
 
@@ -15,15 +16,14 @@ const errorCase: Record<SubmitError, (value: any) => ReactNode> = {
   price: (price: number) => (price === 0 ? "금액을 입력해야합니다" : false),
 };
 
-export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProps) {
+export default function AddExpenseForm({ group, onSubmit }: AddExpenseFormProps) {
+  const { members } = group;
   const [payer, setPayer] = useState<string>("0");
   const [price, setPrice] = useState<number>(0);
   const [desc, setDesc] = useState("");
   const [date, setDate] = useState<Date>();
   const [isCalendar, setIsCalender] = useState(false);
-
   const optionsData = members.map((member, index) => ({ value: (index + 1).toString(), label: member }));
-
   const isErrorPayer = errorCase.payer(payer);
   const isErrorPrice = errorCase.price(price);
 

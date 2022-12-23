@@ -2,7 +2,7 @@ import { createContext } from "react";
 import { IGroup } from "../../types/Group.type";
 
 export interface GroupState {
-  groups: IGroup[];
+  groups: Map<string, IGroup>;
 }
 
 export interface GroupControlAPI {
@@ -15,7 +15,7 @@ export interface GroupControlAPI {
 }
 
 export const GroupContext = createContext<GroupState>({
-  groups: [],
+  groups: new Map(),
 });
 
 export const GroupControlAPIContext = createContext<GroupControlAPI>({
