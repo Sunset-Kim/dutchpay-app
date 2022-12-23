@@ -1,11 +1,12 @@
-import { ActionIcon, Badge, Box, Button, Group, Input, Text } from "@mantine/core";
+import { ActionIcon, Badge, Box, Button, Group, Input, Kbd, Text } from "@mantine/core";
 import { IconX } from "@tabler/icons";
 import { FormEventHandler, useState } from "react";
+import Callout from "../common/Callout";
 
 type ErrorCategories = "duplicate" | "empty" | null;
 
 const errorMessage: Record<Exclude<ErrorCategories, null>, string> = {
-  duplicate: "멤버이름이 중복되었습니다.",
+  duplicate: "이미 등록된 멤버입니다.",
   empty: "멤버이름은 필수 입력값 입니다",
 };
 
@@ -61,9 +62,25 @@ export default function AddMembers({ members, onSubmit, onDelete }: AddMemberPro
 
   return (
     <Box component="form" onSubmit={handleSubmit}>
+      <Text size={"lg"} weight={700} mb="sm">
+        멤버를 등록해주세요
+      </Text>
+
+      <Callout>
+        <Text size="sm">혹시 여러명의 멤버를 등록하고 싶으신가요?</Text>
+        <Text size="sm">
+          <Kbd>,</Kbd> 을 이용해 여러명의 멤버를 등록해보세요!
+        </Text>
+      </Callout>
+
       <Input.Wrapper required label="멤버입력">
         <Group spacing={0} mb={8} grow>
-          <Input type="text" placeholder="ex) 김영식" value={value} onChange={(e) => setValue(e.target.value)} />
+          <Input
+            type="text"
+            placeholder="ex) 김영식 / 김영식,김춘식"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
           <Button type="submit" name="add" sx={{ flex: 0 }}>
             추가
           </Button>
