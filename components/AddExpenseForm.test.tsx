@@ -52,26 +52,18 @@ describe("AddExpenseForm(정산정보 입력폼)", () => {
     it("require 값을 입력하지 않으면 에러메세지가 보인다", async () => {
       const { options, addBtn, price, desc, handleSubmit, calendarToggle } = renderComponent(DEFAULT_GROUP);
       expect(screen.queryAllByRole("alert")).toHaveLength(2);
-      await userEvent.click(addBtn);
-      expect(handleSubmit).not.toBeCalled();
 
       await userEvent.selectOptions(screen.getByRole("combobox"), options[1]);
       expect(options[1]).toBeInTheDocument();
       expect(screen.queryAllByRole("alert")).toHaveLength(1);
-      await userEvent.click(addBtn);
-      expect(handleSubmit).not.toBeCalled();
 
       await userEvent.type(price, "20000");
       expect(screen.queryAllByRole("alert")).toHaveLength(0);
       await userEvent.click(addBtn);
       expect(handleSubmit).toBeCalled();
 
-      await userEvent.type(desc, "차비");
-      expect(screen.queryAllByRole("alert")).toHaveLength(0);
-      expect(handleSubmit).toBeCalled();
-
       await userEvent.click(calendarToggle);
-      expect(screen.queryAllByRole("alert")).toHaveLength(1);
+      expect(screen.queryAllByRole("alert")).toHaveLength(2);
     });
     it("submit을 누르면 해당 input의 value값이 submit함수에 포함된다 ", async () => {
       const { options, price, desc, handleSubmit, addBtn, calendarToggle } = renderComponent(DEFAULT_GROUP);
