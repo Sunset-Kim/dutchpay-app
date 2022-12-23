@@ -1,4 +1,4 @@
-import { getAllByTestId, render, screen, within } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { EXPENSE_INFO_LIST } from "../fixture/expense";
 import { ExpenseInfo } from "../types/Expense.type";
 import ExpenseList from "./ExpenseList";
@@ -18,7 +18,7 @@ beforeAll(() => {
 });
 
 const renderComponent = ({ list }: { list: ExpenseInfo[] }) => {
-  return render(<ExpenseList list={list} />);
+  return render(<ExpenseList expenseList={list} />);
 };
 describe("ExpenseList", () => {
   it("should render with no Data", () => {

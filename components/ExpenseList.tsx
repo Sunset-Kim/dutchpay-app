@@ -6,15 +6,15 @@ import NoContent from "./common/NoContent";
 import Price from "./Price";
 
 interface ExpenseListProps {
-  list: ExpenseInfo[];
+  expenseList: ExpenseInfo[];
 }
 
-export default function ExpenseList({ list }: ExpenseListProps) {
-  if (list.length === 0) {
+export default function ExpenseList({ expenseList }: ExpenseListProps) {
+  if (expenseList.length === 0) {
     return <NoContent>정산정보 입력창에서 정산정보를 추가해보세요!</NoContent>;
   }
 
-  const rows = list.map((expense, i) => {
+  const rows = expenseList.map((expense, i) => {
     const { date, desc, payer, price } = expense;
     return (
       <tr key={`expense${i}`} data-testid="expenseItem">

@@ -28,7 +28,7 @@ export default function GroupCreate() {
     };
 
     addGroup(group);
-    push("/expense", { query: group.name });
+    push(group.name);
   };
 
   const isDisabled: (active: number) => boolean = (active) => {
