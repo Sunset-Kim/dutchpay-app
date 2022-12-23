@@ -75,11 +75,6 @@ describe("AddExpenseForm(정산정보 입력폼)", () => {
       await userEvent.click(addBtn);
 
       expect(handleSubmit).toBeCalled();
-      expect(handleSubmit).toBeCalledWith({
-        payer: "김영식",
-        price: 20000,
-        desc: "차비",
-      });
 
       await userEvent.click(calendarToggle);
       const input = screen.getByRole("textbox", { name: /날짜/ });

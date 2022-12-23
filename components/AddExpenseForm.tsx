@@ -39,12 +39,14 @@ export default function AddExpenseForm({ group, onSubmit }: AddExpenseFormProps)
 
     isCalendar
       ? onSubmit({
+          id: new Date().toString(),
           payer: members[Number(payer) - 1],
           price,
           desc,
           date,
         })
       : onSubmit({
+          id: new Date().toString(),
           payer: members[Number(payer) - 1],
           price,
           desc,

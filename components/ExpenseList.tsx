@@ -1,5 +1,5 @@
 import { ActionIcon, Group, ScrollArea, Table, Text } from "@mantine/core";
-import { IconPencil, IconTrash } from "@tabler/icons";
+import { IconTrash } from "@tabler/icons";
 import dayjs from "dayjs";
 import { useEffect, useRef } from "react";
 import { ExpenseInfo } from "../types/Expense.type";
@@ -8,9 +8,10 @@ import Price from "./Price";
 
 interface ExpenseListProps {
   expenseList: ExpenseInfo[];
+  onDelete: (id: string) => void;
 }
 
-export default function ExpenseList({ expenseList }: ExpenseListProps) {
+export default function ExpenseList({ expenseList, onDelete }: ExpenseListProps) {
   const tableRef = useRef<HTMLTableElement>(null);
   const viewport = useRef<HTMLDivElement>(null);
 
@@ -24,7 +25,7 @@ export default function ExpenseList({ expenseList }: ExpenseListProps) {
   }
 
   const rows = expenseList.map((expense, i) => {
-    const { date, desc, payer, price } = expense;
+    const { id, date, desc, payer, price } = expense;
     return (
       <tr key={`expense${i}`} data-testid="expenseItem">
         <td>
@@ -43,10 +44,7 @@ export default function ExpenseList({ expenseList }: ExpenseListProps) {
         </td>
         <td>
           <Group spacing={0} position="right">
-            <ActionIcon>
-              <IconPencil size={16} stroke={1.5} />
-            </ActionIcon>
-            <ActionIcon color="red">
+            <ActionIcon color="red" title="delete expense list" onClick={() => onDelete(id)}>
               <IconTrash size={16} stroke={1.5} />
             </ActionIcon>
           </Group>
