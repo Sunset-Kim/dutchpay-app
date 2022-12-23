@@ -25,7 +25,7 @@ export default function ExpenseSummary({ expenseList, group }: ExpenseSummaryPro
         <ExpenseResult data={[...info.values()].sort((a, b) => b.price - a.price)} members={group.members} />
       </Stack>
       <Group>
-        <Button variant="outline" onClick={() => exportPNG(container.current)}>
+        <Button variant="outline" onClick={() => exportPNG(container.current, { maxWidth: 320 })}>
           이미지로 내보내기
         </Button>
       </Group>
