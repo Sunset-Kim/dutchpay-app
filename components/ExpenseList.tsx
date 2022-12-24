@@ -38,7 +38,17 @@ export default function ExpenseList({ expenseList, onDelete }: ExpenseListProps)
           <Price value={price} />
         </td>
         <td>
-          <Text lineClamp={1} align="left" w={100}>
+          <Text
+            lineClamp={1}
+            align="left"
+            sx={(theme) => ({
+              width: 40,
+
+              [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+                width: "100px",
+              },
+            })}
+          >
             {desc ?? "-"}
           </Text>
         </td>

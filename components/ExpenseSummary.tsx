@@ -21,7 +21,7 @@ export default function ExpenseSummary({ expenseList, group }: ExpenseSummaryPro
   return (
     <Stack>
       <Stack ref={container}>
-        <ExpenseChart data={[...info.values()].sort((a, b) => b.price - a.price)} total={totalPrice} />
+        <ExpenseChart ExpenseSegments={[...info.values()].sort((a, b) => b.price - a.price)} total={totalPrice} />
         <ExpenseResult data={[...info.values()].sort((a, b) => b.price - a.price)} members={group.members} />
       </Stack>
       <Group>

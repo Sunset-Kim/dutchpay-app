@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import { EXPENSE_INFO_LIST } from "../fixture/expense";
 import ExpenseChart from "./ExpenseChart";
 
 const default_data = [
@@ -18,7 +17,7 @@ const default_data = [
 const default_total = 20000;
 
 const renderSummary = () => {
-  render(<ExpenseChart data={default_data} total={default_total} />);
+  render(<ExpenseChart ExpenseSegments={default_data} total={default_total} />);
 };
 
 describe("ExpenseSummary", () => {
