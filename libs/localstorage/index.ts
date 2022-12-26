@@ -8,13 +8,13 @@ export interface LocalstroageOption<T> {
 }
 
 export default class Localstorage {
-  static getItem<T = any, K = any>(key: string, option?: LocalstroageOption<K>) {
+  static getItem<T = any>(key: string, option?: LocalstroageOption<T>) {
     try {
       const item = localStorage.getItem(key);
       if (item) {
-        return option?.onSucess ? option.onSucess(JSON.parse(item, reviver)) : JSON.parse(item, reviver);
+        return option?.onSucess ? option.onSucess(JSON.parse(item, reviver)) : (JSON.parse(item, reviver) as T);
       }
-      return option?.defaultValue ?? undefined;
+      return option?.defaultValue;
     } catch (error) {
       console.warn("localstorage:: parse 실패", error);
 
@@ -22,7 +22,7 @@ export default class Localstorage {
         option.onError();
       }
 
-      return option?.defaultValue ?? undefined;
+      return option?.defaultValue;
     }
   }
 

@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import { IGroup } from "../../types/Group.type";
+import { ExpenseInfo } from "./../../types/Expense.type";
 
 export interface GroupState {
   groups: Map<string, IGroup>;
@@ -12,6 +13,9 @@ export interface GroupControlAPI {
 
   addMember: (group: IGroup, member: string | string[]) => void;
   deleteMember: (group: IGroup, member: string) => void;
+
+  addExpenseList: (group: IGroup, expenseInfo: ExpenseInfo) => void;
+  deleteExpense: (group: IGroup, id: string) => void;
 }
 
 export const GroupContext = createContext<GroupState>({
@@ -24,4 +28,6 @@ export const GroupControlAPIContext = createContext<GroupControlAPI>({
   editGroupName: () => {},
   addMember: () => {},
   deleteMember: () => {},
+  addExpenseList: () => {},
+  deleteExpense: () => {},
 });

@@ -1,32 +1,19 @@
 import { Center, Grid, Stack } from "@mantine/core";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import AddExpenseForm from "../../components/AddExpenseForm";
 import NoContent from "../../components/common/NoContent";
 import ExpenseList from "../../components/ExpenseList";
 import ExpenseSummary from "../../components/ExpenseSummary";
 import useGroup from "../../hooks/useGroup";
-import { ExpenseInfo } from "../../types/Expense.type";
 
 export default function ExpenseMain() {
   const { query } = useRouter();
-  const { groups } = useGroup();
-  const [expenseList, setExpenseList] = useState<ExpenseInfo[]>([]);
+  const { groups, addExpenseList, deleteExpense } = useGroup();
 
-  const deleteExpense = (id: string) => setExpenseList((prev) => prev.filter((expense) => expense.id !== id));
+  const notExist = !query.id || typeof query.id !== "string" || !groups.get(query.id as string);
+  const group = groups.get(query.id as string)!;
 
-  // TODO: update list 추가예정
-  // const updateExpense = (newExpense: ExpenseInfo) =>
-  //   setExpenseList((prev) =>
-  //     prev.map((expense) => {
-  //       if (expense.id === newExpense.id) {
-  //         return newExpense;
-  //       }
-  //       return expense;
-  //     })
-  //   );
-
-  if (!query.id || typeof query.id !== "string" || !groups.get(query.id)) {
+  if (notExist) {
     return (
       <Grid.Col span={12}>
         <Center>
@@ -36,19 +23,16 @@ export default function ExpenseMain() {
     );
   }
 
-  const group = groups.get(query.id)!;
-  const addList = (info: ExpenseInfo) => setExpenseList([...expenseList, info]);
-
   return (
     <>
       <Grid.Col span={12} md={5} order={2} orderMd={1}>
         <Stack>
-          <AddExpenseForm group={group} onSubmit={addList} />
-          <ExpenseSummary group={group} expenseList={expenseList} />
+          <AddExpenseForm group={group} onSubmit={(expense) => addExpenseList(group, expense)} />
+          <ExpenseSummary group={group} expenseList={group.expenseList ?? []} />
         </Stack>
       </Grid.Col>
       <Grid.Col span={12} md={7} order={1} orderMd={2}>
-        <ExpenseList expenseList={expenseList} onDelete={deleteExpense} />
+        <ExpenseList expenseList={group.expenseList ?? []} onDelete={(id) => deleteExpense(group, id)} />
       </Grid.Col>
     </>
   );

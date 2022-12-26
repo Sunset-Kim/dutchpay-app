@@ -1,6 +1,7 @@
 import { PropsWithChildren, useEffect, useMemo, useState } from "react";
 import appConfig from "../../config";
 import Localstorage from "../../libs/localstorage";
+import { ExpenseInfo } from "../../types/Expense.type";
 import { IGroup } from "../../types/Group.type";
 import { GroupContext, GroupControlAPI, GroupControlAPIContext } from "./GroupContext";
 
@@ -8,10 +9,10 @@ export default function GroupProvider({ children }: PropsWithChildren) {
   const [groups, setGroups] = useState<Map<string, IGroup>>(new Map());
 
   useEffect(() => {
-    const result = Localstorage.getItem(appConfig.localStorageKey, {
+    const result = Localstorage.getItem<Map<string, IGroup>>(appConfig.localStorageKey, {
       defaultValue: new Map(),
     });
-    setGroups(result);
+    setGroups(result!);
   }, []);
 
   const api: GroupControlAPI = useMemo(
@@ -55,6 +56,30 @@ export default function GroupProvider({ children }: PropsWithChildren) {
           result.set(group.id, {
             ...group,
             members: group.members.filter((m) => m !== member),
+          });
+
+          Localstorage.setItem(appConfig.localStorageKey, result);
+          return result;
+        });
+      },
+      addExpenseList: (group: IGroup, expense: ExpenseInfo) => {
+        setGroups((prev) => {
+          const result = new Map(prev);
+          result.set(group.id, {
+            ...group,
+            expenseList: group.expenseList ? [...group.expenseList, expense] : [expense],
+          });
+
+          Localstorage.setItem(appConfig.localStorageKey, result);
+          return result;
+        });
+      },
+      deleteExpense: (group: IGroup, id: string) => {
+        setGroups((prev) => {
+          const result = new Map(prev);
+          result.set(group.id, {
+            ...group,
+            expenseList: group.expenseList?.filter((expense) => expense.id !== id) ?? [],
           });
 
           Localstorage.setItem(appConfig.localStorageKey, result);

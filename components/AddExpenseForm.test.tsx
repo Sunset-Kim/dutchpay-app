@@ -24,6 +24,7 @@ const renderComponent = (group: IGroup) => {
 };
 
 const DEFAULT_GROUP = {
+  id: "id1",
   name: "abc",
   members: ["김영식", "김민우"],
 };
