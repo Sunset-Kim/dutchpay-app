@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { GroupControlAPIContext } from "../context/GroupContext";
+import { GroupControlAPIContext } from "../context/group/GroupContext";
 const useGroupApi = () => {
   const context = useContext(GroupControlAPIContext);
 

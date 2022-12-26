@@ -1,46 +1,30 @@
-import {
-  Box,
-  createStyles,
-  Divider,
-  Group,
-  MantineColor,
-  Paper,
-  Progress,
-  SimpleGrid,
-  Stack,
-  Text,
-  ThemeIcon,
-} from "@mantine/core";
+import { Box, createStyles, Divider, Group, Paper, Progress, SimpleGrid, Stack, Text, ThemeIcon } from "@mantine/core";
 
-import { IconArrowUpRight, IconCash } from "@tabler/icons";
+import { IconCash } from "@tabler/icons";
 import { ExpenseSegment, ProgressSection } from "../types/ExpenseSummary.type";
 
 import { formatKRWCurrency } from "../libs/formater";
 
 interface ExpenseChartProps {
-  data: ExpenseSegment[];
+  ExpenseSegments: ExpenseSegment[];
   total: number;
 }
 
 const useStyles = createStyles((theme) => ({
   progressLabel: {
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
     lineHeight: 1,
     fontSize: theme.fontSizes.sm,
   },
 
   segment: {
-    borderBottom: "3px solid",
     paddingBottom: 5,
   },
 
   segmentCount: {
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
     lineHeight: 1.3,
   },
 
   diff: {
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
     display: "flex",
     alignItems: "center",
   },
@@ -50,18 +34,18 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function ExpenseChart({ data, total }: ExpenseChartProps) {
+export default function ExpenseChart({ ExpenseSegments, total }: ExpenseChartProps) {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
-  const perPrice = total / data.length;
-  const secitons: ProgressSection[] = data.map((item, i) => {
+  const perPrice = total / ExpenseSegments.length ?? 0;
+  const secitons: ProgressSection[] = ExpenseSegments.map((item, i) => {
     const { payer, part } = item;
     return { value: part, label: payer, color: COLORS[i % COLORS.length] };
   });
 
   const { classes } = useStyles();
 
-  const descriptions = data.map((segment, i) => (
+  const descriptions = ExpenseSegments.map((segment, i) => (
     <Box key={segment.payer} className={classes.segment}>
       <Text transform="uppercase" size="xs" color="dimmed" weight={700}>
         {segment.payer}
@@ -72,8 +56,9 @@ export default function ExpenseChart({ data, total }: ExpenseChartProps) {
         <Text weight={700} size="sm" className={classes.segmentCount}>
           {segment.part.toFixed(2)}%
         </Text>
-        <Divider color={COLORS[i % COLORS.length]} />
       </Group>
+
+      <Divider sx={{ borderColor: COLORS[i % COLORS.length], borderWidth: "3px", borderRadius: "999px" }} />
     </Box>
   ));
 
@@ -97,7 +82,7 @@ export default function ExpenseChart({ data, total }: ExpenseChartProps) {
       <Divider />
 
       <Box py="xs">
-        {data.length !== 0 && (
+        {ExpenseSegments.length !== 0 && (
           <Text size="sm">{`이번에 1인당 결제하실 금액은 ${formatKRWCurrency(perPrice)} 입니다.`}</Text>
         )}
 

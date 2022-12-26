@@ -1,50 +1,59 @@
-import { NativeSelect, TextInput, NumberInput, Switch, Button, Box, Card, Stack, Group } from "@mantine/core";
-import React, { FormEventHandler, ReactNode, useState } from "react";
+import { Button, Card, Group, NativeSelect, NumberInput, Stack, Switch, TextInput } from "@mantine/core";
+import { FormEventHandler, ReactNode, useState } from "react";
 import { ExpenseInfo } from "../types/Expense.type";
+import { IGroup } from "../types/Group.type";
 import CalendarInput from "./CalendarInput";
 
+const MIN_AMOUNT = 0;
+const MAX_AMOUNT = 10_000_000;
 interface AddExpenseFormProps {
-  members: string[];
+  group: IGroup;
   onSubmit: (param: ExpenseInfo) => void;
 }
 
 type SubmitError = "price" | "payer";
 
 const errorCase: Record<SubmitError, (value: any) => ReactNode> = {
-  payer: (payer: string) => (payer === "0" ? "option을 선택해야합니다" : false),
-  price: (price: number) => (price === 0 ? "금액을 입력해야합니다" : false),
+  payer: (payer: string) => (payer === "0" ? "멤버는 꼭 선택해야해요" : false),
+  price: (price: number) => (price === 0 ? "금액은 꼭 입력해야해요" : false),
 };
 
-export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProps) {
+export default function AddExpenseForm({ group, onSubmit }: AddExpenseFormProps) {
+  const { members } = group;
   const [payer, setPayer] = useState<string>("0");
   const [price, setPrice] = useState<number>(0);
   const [desc, setDesc] = useState("");
   const [date, setDate] = useState<Date>();
   const [isCalendar, setIsCalender] = useState(false);
-
   const optionsData = members.map((member, index) => ({ value: (index + 1).toString(), label: member }));
-
   const isErrorPayer = errorCase.payer(payer);
   const isErrorPrice = errorCase.price(price);
 
+  const isDisabled = isErrorPayer || isErrorPrice;
+
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
-    if (isErrorPayer || isErrorPrice) {
+    if (isDisabled) {
       return;
     }
 
     isCalendar
       ? onSubmit({
+          id: new Date().toString(),
           payer: members[Number(payer) - 1],
           price,
           desc,
           date,
         })
       : onSubmit({
+          id: new Date().toString(),
           payer: members[Number(payer) - 1],
           price,
           desc,
         });
+
+    setPrice(0);
+    setDesc("");
   };
 
   return (
@@ -67,7 +76,7 @@ export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProp
             value={payer}
             onChange={(event) => setPayer(event.currentTarget.value)}
             error={isErrorPayer}
-            data={[{ value: "0", label: "결제한 사람을 선택해주세요" }, ...optionsData]}
+            data={[{ value: "0", label: "결제한 사람을 선택해주세요", disabled: true }, ...optionsData]}
             required
           />
           <NumberInput
@@ -76,13 +85,24 @@ export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProp
             name="price"
             hideControls
             step={100}
-            parser={(value) => value?.replace(/\$\s?|(,*)/g, "")}
+            parser={(value) => value?.replace(/\₩\s?|(,*)/g, "")}
             formatter={(value) =>
-              !Number.isNaN(parseFloat(value!)) ? `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "$ "
+              !Number.isNaN(parseFloat(value!)) ? `₩ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "₩ "
             }
             error={isErrorPrice}
-            onChange={(val) => {
-              setPrice(val ?? 0);
+            onChange={(value) => {
+              if (!value) return;
+              let amount;
+
+              if (value > MAX_AMOUNT) {
+                amount = MAX_AMOUNT;
+              } else if (value < MIN_AMOUNT) {
+                amount = MIN_AMOUNT;
+              } else {
+                amount = value;
+              }
+
+              setPrice(amount);
             }}
             required
           />
@@ -92,9 +112,12 @@ export default function AddExpenseForm({ members, onSubmit }: AddExpenseFormProp
             label="Description"
             name="desc"
             onChange={(event) => setDesc(event.currentTarget.value)}
+            placeholder="간략한 메모를 남겨주세요. ex) 치킨값"
           />
 
-          <Button type="submit">추가</Button>
+          <Button disabled={!!isDisabled} type="submit">
+            추가
+          </Button>
         </Stack>
       </Card.Section>
     </Card>

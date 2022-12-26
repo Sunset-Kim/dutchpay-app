@@ -1,25 +1,35 @@
-import { ActionIcon, Group, ScrollArea, Table, Text, Paper } from "@mantine/core";
-import { ExpenseInfo } from "../types/Expense.type";
+import { ActionIcon, Group, ScrollArea, Table, Text } from "@mantine/core";
+import { IconTrash } from "@tabler/icons";
 import dayjs from "dayjs";
-import NoContent from "./NoContent";
-import { IconPencil, IconTrash } from "@tabler/icons";
+import { useEffect, useRef } from "react";
+import { ExpenseInfo } from "../types/Expense.type";
+import NoContent from "./common/NoContent";
 import Price from "./Price";
 
 interface ExpenseListProps {
-  list: ExpenseInfo[];
+  expenseList: ExpenseInfo[];
+  onDelete: (id: string) => void;
 }
 
-export default function ExpenseList({ list }: ExpenseListProps) {
-  if (list.length === 0) {
+export default function ExpenseList({ expenseList, onDelete }: ExpenseListProps) {
+  const tableRef = useRef<HTMLTableElement>(null);
+  const viewport = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!viewport.current || !tableRef.current) return;
+    viewport.current.scrollTo({ top: tableRef.current.clientHeight, behavior: "smooth" });
+  }, [expenseList]);
+
+  if (expenseList.length === 0) {
     return <NoContent>정산정보 입력창에서 정산정보를 추가해보세요!</NoContent>;
   }
 
-  const rows = list.map((expense, i) => {
-    const { date, desc, payer, price } = expense;
+  const rows = expenseList.map((expense, i) => {
+    const { id, date, desc, payer, price } = expense;
     return (
       <tr key={`expense${i}`} data-testid="expenseItem">
         <td>
-          <Text>{date ? dayjs(date).format("YYYY-MM-DD") : "-"}</Text>
+          <Text>{date ? dayjs(date).format("MM.DD") : "-"}</Text>
         </td>
         <td>
           <Text size={"sm"}>{payer}</Text>
@@ -28,14 +38,23 @@ export default function ExpenseList({ list }: ExpenseListProps) {
           <Price value={price} />
         </td>
         <td>
-          <Text align="left">{desc ?? "-"}</Text>
+          <Text
+            lineClamp={1}
+            align="left"
+            sx={(theme) => ({
+              width: 40,
+
+              [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+                width: "100px",
+              },
+            })}
+          >
+            {desc ?? "-"}
+          </Text>
         </td>
         <td>
           <Group spacing={0} position="right">
-            <ActionIcon>
-              <IconPencil size={16} stroke={1.5} />
-            </ActionIcon>
-            <ActionIcon color="red">
+            <ActionIcon color="red" title="delete expense list" onClick={() => onDelete(id)}>
               <IconTrash size={16} stroke={1.5} />
             </ActionIcon>
           </Group>
@@ -45,8 +64,8 @@ export default function ExpenseList({ list }: ExpenseListProps) {
   });
 
   return (
-    <Paper component={ScrollArea} withBorder shadow={"sm"} p={20} h={700}>
-      <Table verticalSpacing="sm" align="center">
+    <ScrollArea h={380} viewportRef={viewport}>
+      <Table striped highlightOnHover verticalSpacing="sm" align="center" ref={tableRef}>
         <thead>
           <tr>
             <th>날짜</th>
@@ -58,6 +77,6 @@ export default function ExpenseList({ list }: ExpenseListProps) {
         </thead>
         <tbody>{rows}</tbody>
       </Table>
-    </Paper>
+    </ScrollArea>
   );
 }
