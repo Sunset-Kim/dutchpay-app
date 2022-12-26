@@ -55,7 +55,7 @@ export default function GroupCreate() {
               <Highlight size={"lg"} weight={700} highlight={name}>{`${name} 맞나요?`}</Highlight>
             ) : (
               <Text size={"lg"} weight={700}>
-                그룹명을 입력하세요
+                그룹명을 입력해주세요
               </Text>
             )}
 
@@ -97,7 +97,7 @@ export default function GroupCreate() {
         </Stepper>
 
         <Group position="center">
-          <Button variant="outline" onClick={prevStep}>
+          <Button disabled={active <= 0} variant="outline" onClick={prevStep}>
             이전단계로
           </Button>
           <Button disabled={isDisabled(active)} onClick={active === MAX_STEP ? completeStep : nextStep}>

@@ -7,12 +7,15 @@ export default function Header() {
     <MantineHeader height={56}>
       <Container>
         <Group h="100%" position="apart" align={"center"}>
-          <Text size={"lg"} weight={800}>
-            우리자주만나요
-          </Text>
+          <Link href={"/"}>
+            <Text size={"lg"} weight={800}>
+              우리자주만나요
+            </Text>
+          </Link>
+
           <Group>
-            <Button variant="outline">
-              <Link href={"/"}>그룹생성하고 시작하기</Link>
+            <Button href={"/group/create"} component={Link} variant="outline">
+              그룹만들고 시작하기
             </Button>
           </Group>
         </Group>
