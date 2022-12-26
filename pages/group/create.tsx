@@ -23,12 +23,13 @@ export default function GroupCreate() {
       return;
     }
     const group = {
+      id: new Date().getTime().toString(),
       name,
       members,
     };
 
     addGroup(group);
-    push(group.name);
+    push(group.id);
   };
 
   const isDisabled: (active: number) => boolean = (active) => {
@@ -88,9 +89,11 @@ export default function GroupCreate() {
 
               <GroupCard
                 group={{
+                  id: new Date().getTime().toString(),
                   name,
                   members,
                 }}
+                readonly
               />
             </Stack>
           </Stepper.Completed>

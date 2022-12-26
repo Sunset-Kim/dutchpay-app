@@ -1,14 +1,13 @@
-import { useState } from "react";
 import GroupList from "../../components/group/GroupList";
+import useGroup from "../../hooks/useGroup";
 import { IGroup } from "../../types/Group.type";
 
 export default function Groups() {
-  const [groups, setGroups] = useState<IGroup[]>([]);
+  const { groups, deleteGroup } = useGroup();
 
-  // TODO: GROUP 삭제지원
-  const onDelete = () => {
-    console.log("group 삭제");
+  const onDelete = (group: IGroup) => {
+    deleteGroup(group);
   };
 
-  return <GroupList groups={[]} onDelete={onDelete} />;
+  return <GroupList groups={groups} onDelete={onDelete} />;
 }
