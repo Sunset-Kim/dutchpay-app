@@ -5,12 +5,12 @@ import NoContent from "../common/NoContent";
 import GroupCard from "./GroupCard";
 
 export interface GroupListProps {
-  groups: IGroup[];
-  onDelete?: (id: string) => void;
+  groups: Map<string, IGroup>;
+  onDelete?: (group: IGroup) => void;
 }
 
 export default function GroupList({ groups, onDelete }: GroupListProps) {
-  if (groups.length === 0) {
+  if (groups.size === 0) {
     return (
       <NoContent>
         <Box mb="xs">
@@ -25,11 +25,11 @@ export default function GroupList({ groups, onDelete }: GroupListProps) {
       </NoContent>
     );
   }
+
   return (
     <SimpleGrid w="100%" cols={2} spacing="xs" verticalSpacing="xs">
-      {groups.map((group, i) => (
-        // TODO: unique key 변경
-        <GroupCard key={"group" + i} group={group} onDelete={onDelete}></GroupCard>
+      {[...groups.values()].map((group, i) => (
+        <GroupCard key={group.id ?? "group" + i} group={group} onDelete={onDelete}></GroupCard>
       ))}
     </SimpleGrid>
   );

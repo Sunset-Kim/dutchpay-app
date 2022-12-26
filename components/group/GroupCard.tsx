@@ -1,16 +1,18 @@
-import { ActionIcon, Badge, Divider, Group, Paper, SimpleGrid, Text } from "@mantine/core";
+import { ActionIcon, Badge, Button, Divider, Group, Paper, SimpleGrid, Text } from "@mantine/core";
 import { IconTrash } from "@tabler/icons";
+import Link from "next/link";
 import { IGroup } from "../../types/Group.type";
 
 export interface GroupCardProps {
   group: IGroup;
-  onDelete?: (id: string) => void;
+  onDelete?: (group: IGroup) => void;
+  readonly?: boolean;
 }
 
-export default function GroupCard({ group, onDelete }: GroupCardProps) {
+export default function GroupCard({ group, readonly = false, onDelete }: GroupCardProps) {
   const { name, members } = group;
   const handleClick = () => {
-    onDelete && onDelete(name);
+    onDelete && onDelete(group);
   };
 
   return (
@@ -35,6 +37,12 @@ export default function GroupCard({ group, onDelete }: GroupCardProps) {
           </Badge>
         ))}
       </SimpleGrid>
+
+      {!readonly && (
+        <Button mt="lg" w="100%" variant="light" color={"orange.5"} href={`group/${group.id}`} component={Link}>
+          추가정산하기
+        </Button>
+      )}
     </Paper>
   );
 }
