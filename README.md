@@ -1,34 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 개발내역
+- 22.12.27 :: 로컬스토리지 기반한 dutchpay beta 배포
 
-## Getting Started
+# 구현내용
+- [ ] : 그룹 
+  - [x] : group create
+  - [x] : group read
+  - [ ] : group update
+  - [x] : group delete
+  
+- [ ] : 정산정보를 차트로 제공하고 각자 정산내용을 볼 수 있다
+  - [x] : 정산정보 차트
+  - [x] : 개별정산 리스트 display
+  - [x] : 개별정산 리스트 export for png
+  - [ ] : 카카오톡 전송 및 og기반 공유
+  
+- [ ] : Auth
+ - [ ] : Oauth 를 사용
+ - [ ] : 계좌정보등록
+ - [ ] : 친구등록코드 기반 친구리스트 구현
 
-First, run the development server:
+- [ ] : Server
+  - [ ] : dynamoDB 기반으로 data 이전
+  
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### Page별 사용
+- 메인페이지
+![스크린샷 2022-12-26 오후 8 06 51](https://user-images.githubusercontent.com/77092632/209542153-ad935c7f-a995-4f73-942d-59c44066c326.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 멀티그룹생성 페이지
+![스크린샷 2022-12-26 오후 8 07 20](https://user-images.githubusercontent.com/77092632/209542196-b05c802a-39e4-4ed8-8580-171ac276286f.png)
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- 멀티입력구현
+![2022-12-26 20 30 42](https://user-images.githubusercontent.com/77092632/209544288-03b43f36-be97-4e47-b728-b9e4c0e76ebf.gif)
