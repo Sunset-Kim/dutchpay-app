@@ -4,12 +4,14 @@ import { useState } from "react";
 import AddMembers from "../../components/group/AddGroupMembers";
 import CreateGroup from "../../components/group/CreateGroup";
 import GroupCard from "../../components/group/GroupCard";
-import useGroup from "../../hooks/useGroup";
+import { useAuth } from "../../context/auth/authContext";
+import GroupsClientService from "../../services/groups.client.service";
 
 const MAX_STEP = 2;
+const groupService = GroupsClientService.getInstance();
 
 export default function GroupCreate() {
-  const { addGroup } = useGroup();
+  const { authUser } = useAuth();
 
   const { push } = useRouter();
   const [members, setMembers] = useState<string[]>([]);
@@ -18,18 +20,35 @@ export default function GroupCreate() {
   const [active, setActive] = useState(0);
   const nextStep = () => setActive((current) => (current < MAX_STEP ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
-  const completeStep = () => {
+  const completeStep = async () => {
     if (!name || !members || members.length === 0) {
       return;
     }
+
     const group = {
-      id: new Date().getTime().toString(),
       name,
       members,
     };
 
-    addGroup(group);
-    push(group.id);
+    if (authUser?.uid === undefined) {
+      return;
+    }
+
+    try {
+      const res = await groupService.addGroup({
+        name: group.name,
+        ownerId: authUser.uid,
+        members: group.members,
+      });
+
+      if (!res.payload) {
+        throw "client response error";
+      }
+
+      push(res.payload.groupId);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const isDisabled: (active: number) => boolean = (active) => {
@@ -91,6 +110,7 @@ export default function GroupCreate() {
                 group={{
                   id: new Date().getTime().toString(),
                   name,
+                  ownerId: "anonymous",
                   members,
                 }}
                 readonly
