@@ -112,6 +112,7 @@ export default function GroupCreate() {
                   name,
                   ownerId: "anonymous",
                   members,
+                  expenseList: [],
                 }}
                 readonly
               />

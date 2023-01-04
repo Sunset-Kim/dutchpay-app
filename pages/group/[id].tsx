@@ -6,10 +6,44 @@ import NoContent from "../../components/common/NoContent";
 import ExpenseList from "../../components/ExpenseList";
 import ExpenseSummary from "../../components/ExpenseSummary";
 import { useAuth } from "../../context/auth/authContext";
+import { AddExpense } from "../../models/expense/schema/expense.add.schema";
+import ExpenseClientService from "../../services/expense.client.service";
 import GroupsClientService from "../../services/groups.client.service";
+import { IGroup } from "../../types/Group.type";
 import getStringValueFromQuery from "../../utils/getValueFromQuery";
 
 const groupService = GroupsClientService.getInstance();
+
+const addFn = async ({ data, groupId, expense }: { data: IGroup; groupId: string; expense: AddExpense }) => {
+  const res = await expenseService.add({ groupId, expense });
+
+  if (!res.payload) {
+    throw "Error add expense";
+  }
+
+  const { expenseId, createdAt } = res.payload;
+  const newExpenseList: IGroup["expenseList"] = data.expenseList
+    ? [...data.expenseList, { id: expenseId, createdAt, ...expense }]
+    : [{ id: expenseId, createdAt, ...expense }];
+  return {
+    ...data,
+    expenseList: newExpenseList,
+  };
+};
+
+const deleteFn = async ({ data, groupId, expenseId }: { data: IGroup; groupId: string; expenseId: string }) => {
+  const res = await expenseService.delete({ groupId, expenseId });
+
+  if (!res.payload) {
+    throw "Error delete expense";
+  }
+
+  const newExpenseList: IGroup["expenseList"] = data.expenseList.filter((expense) => expense.id !== expenseId);
+  return {
+    ...data,
+    expenseList: newExpenseList,
+  };
+};
 
 const fetcher = async ([_, groupId]: string[]) => {
   const resp = await groupService.getGroup({ groupId });
@@ -20,13 +54,32 @@ const fetcher = async ([_, groupId]: string[]) => {
   return resp.payload;
 };
 
+const expenseService = ExpenseClientService.getInstance();
+
 export default function ExpenseMain() {
   const { query } = useRouter();
   const { authUser } = useAuth();
   const id = getStringValueFromQuery({ query, field: "id" });
-  const { data, isLoading, error } = useSWR(id && authUser ? ["api/groups", id] : null, fetcher, {
+  const { data, isLoading, error, mutate } = useSWR(id && authUser ? ["api/groups", id] : null, fetcher, {
     revalidateOnFocus: false,
   });
+
+  const addExpense = async ({ groupId, expense }: { groupId: string; expense: AddExpense }) => {
+    if (!data) return;
+
+    mutate(addFn({ data, groupId, expense }), {
+      revalidate: false,
+      rollbackOnError: true,
+    });
+  };
+
+  const deleteExpense = async ({ groupId, expenseId }: { groupId: string; expenseId: string }) => {
+    if (!data) return;
+    mutate(deleteFn({ data, groupId, expenseId }), {
+      revalidate: false,
+      rollbackOnError: true,
+    });
+  };
 
   if (!id) {
     return <div>데이터를 읽고 있습니다!</div>;
@@ -50,12 +103,15 @@ export default function ExpenseMain() {
     <>
       <Grid.Col span={12} md={5} order={2} orderMd={1}>
         <Stack>
-          <AddExpenseForm group={data} onSubmit={(expense) => console.log(data, expense)} />
+          <AddExpenseForm group={data} onSubmit={(expense) => addExpense({ groupId: id, expense })} />
           <ExpenseSummary group={data} expenseList={data?.expenseList ?? []} />
         </Stack>
       </Grid.Col>
       <Grid.Col span={12} md={7} order={1} orderMd={2}>
-        <ExpenseList expenseList={data?.expenseList ?? []} onDelete={(id) => console.log(data, id)} />
+        <ExpenseList
+          expenseList={data?.expenseList ?? []}
+          onDelete={(expenseId) => deleteExpense({ groupId: id, expenseId })}
+        />
       </Grid.Col>
     </>
   );

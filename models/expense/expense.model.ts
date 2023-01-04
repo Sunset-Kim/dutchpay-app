@@ -26,8 +26,12 @@ class ExpenseModel {
         ...expense,
         createdAt: firestore.FieldValue.serverTimestamp(),
       });
-      log(res);
-      return res;
+      log(expenseRef.id);
+
+      return {
+        expenseId: expenseRef.id,
+        createdAt: res.writeTime,
+      };
     } catch (error) {
       log(error);
       return null;
@@ -41,6 +45,9 @@ class ExpenseModel {
       const res = await this.GroupsStore.doc(groupId).collection(EXPENSE_COLLECTION_NAME).doc(expenseId).delete();
 
       log(res);
+      return {
+        updateAt: res.writeTime,
+      };
     } catch (error) {
       log(error);
       return null;
