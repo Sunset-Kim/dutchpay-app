@@ -1,3 +1,5 @@
+import { ExpenseInfo } from "./Expense.type";
+
 export interface IGroup {
   createdAt?: {
     _seconds: number;
@@ -11,4 +13,5 @@ export interface IGroup {
   members: string[];
   name: string;
   ownerId: string;
+  expenseList: ExpenseInfo[];
 }

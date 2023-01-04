@@ -1,8 +1,6 @@
 import { firestore } from "firebase-admin";
-import ExpenseList from "../../components/ExpenseList";
 import debug from "../../utils/debug_log";
 import firebaseAdmin from "../common/firebase_admin.model";
-import { ExpenseInfo } from "./schema/expense.schema";
 import { IAddGroups } from "./schema/groups.add.schema";
 
 const GROUP_COLLECTION_NAME = "groups";
@@ -83,38 +81,20 @@ class GroupModel {
   async findGroup(args: { groupId: string }) {
     log(args);
     try {
-      const group = await this.GroupsStore.doc(args.groupId).get();
+      const groupRef = await this.GroupsStore.doc(args.groupId).get();
+      const expenseListRef = await this.GroupsStore.doc(args.groupId).collection(EXPENSE_COLLECTION_NAME).get();
 
-      if (!group.exists) {
+      if (!groupRef.exists) {
         return;
       }
 
+      const expenseList = expenseListRef.empty ? undefined : expenseListRef.docs.map((doc) => doc.data());
+
       return {
         id: args.groupId,
-        ...group.data(),
+        ...groupRef.data(),
+        expenseList,
       };
-    } catch (error) {
-      log(error);
-      return null;
-    }
-  }
-
-  async addExpense(args: { groupId: string; expenseList: ExpenseInfo }) {
-    log(args);
-    try {
-      const expenseRef = this.GroupsStore.doc(args.groupId).collection(EXPENSE_COLLECTION_NAME);
-      return expenseRef.add(ExpenseList);
-    } catch (error) {
-      log(error);
-      return null;
-    }
-  }
-
-  async deleteExpense(args: { groupId: string; expenseId: string }) {
-    log(args);
-    try {
-      await this.GroupsStore.doc(args.groupId).collection(EXPENSE_COLLECTION_NAME).doc(args.expenseId).delete();
-      return;
     } catch (error) {
       log(error);
       return null;
