@@ -1,6 +1,6 @@
 import { Button, Card, Group, NativeSelect, NumberInput, Stack, Switch, TextInput } from "@mantine/core";
 import { FormEventHandler, ReactNode, useState } from "react";
-import { ExpenseInfo } from "../types/Expense.type";
+import { AddExpense } from "../models/expense/schema/expense.add.schema";
 import { IGroup } from "../types/Group.type";
 import CalendarInput from "./CalendarInput";
 
@@ -8,7 +8,7 @@ const MIN_AMOUNT = 0;
 const MAX_AMOUNT = 10_000_000;
 interface AddExpenseFormProps {
   group: IGroup;
-  onSubmit: (param: ExpenseInfo) => void;
+  onSubmit: (param: AddExpense) => void;
 }
 
 type SubmitError = "price" | "payer";
@@ -37,20 +37,20 @@ export default function AddExpenseForm({ group, onSubmit }: AddExpenseFormProps)
       return;
     }
 
-    isCalendar
-      ? onSubmit({
-          id: new Date().toString(),
+    const expenseInfo = isCalendar
+      ? {
           payer: members[Number(payer) - 1],
           price,
           desc,
           date,
-        })
-      : onSubmit({
-          id: new Date().toString(),
+        }
+      : {
           payer: members[Number(payer) - 1],
           price,
           desc,
-        });
+        };
+
+    onSubmit(expenseInfo);
 
     setPrice(0);
     setDesc("");

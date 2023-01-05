@@ -5,14 +5,14 @@ import { IGroup } from "../../types/Group.type";
 
 export interface GroupCardProps {
   group: IGroup;
-  onDelete?: (group: IGroup) => void;
+  onDelete?: (id: string) => void;
   readonly?: boolean;
 }
 
 export default function GroupCard({ group, readonly = false, onDelete }: GroupCardProps) {
-  const { name, members } = group;
+  const { name, members, id } = group;
   const handleClick = () => {
-    onDelete && onDelete(group);
+    onDelete && onDelete(id);
   };
 
   return (
