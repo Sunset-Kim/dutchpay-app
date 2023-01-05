@@ -3,6 +3,7 @@
 participant User
 participant "Web Client" as C
 participant "DutchPay Server" as S
+participant "Firebase Auth" as FBAUTH
 database "DutchPay DB" as DB
 
 User -> C: GET /
@@ -14,32 +15,69 @@ deactivate S
 C -> C: 그룹 입력페이지 groups/create
 C --> User: 그룹생성 페이지
 
-User -> C: 1. 그룹이름 생성 & 저장
-C -> S: POST groups/
+User -> C: 0.로그인 및 회원가입
+C -> FBAUTH: 로그인 요청 (Oauth for Provider)
+FBAUTH --> C: 로그인 결과 (User data, id token)
+
+alt 로그인한 적이 있을때
+  C -> S: 0-1. 맴버정보조회 GET /members/{uid}
 activate S
-S -> S: GUID 생성
-S -> DB: Item 생성 (groupName)
+S -> DB: member uid 조회
+  activate DB
+  DB --> S: success
+  deactivate DB
+  S --> C: 200 success 
+  deactivate S
+  C --> User: sucess (user data)
+
+else 처음로그인할 때
+  C -> S: 0-1. 맴버정보조회 GET /members/{uid}
+  activate S
+  S -> DB: member uid 조회
+  activate DB
+  DB --> S: Not Found
+  deactivate DB
+  S --> C: 404 Not Found
+  deactivate S
+  C -> S: 0-2 맴버생성 요청 POST /members
+
+  activate S
+  S -> DB: 맴버생성
+  activate DB
+  DB --> S: created
+  deactivate DB
+  S --> C: 201 created (user data)
+  deactivate S
+  C --> User: success (user data)
+  end
+
+User -> C: 1. 그룹생성 & 저장
+C -> S: POST /groups/
+activate S
+S -> DB: group 생성
 activate DB
 DB -> S: created
 deactivate DB
 S -> C: 201 created (guid)
 deactivate S
 C -> C: redirection : 그룹 비용정산페이지  groups/{guid}
-C -> S: GET group/[guid]
+
+User -> C: 2. 비용정산페이지
+C -> S: GET group/{guid}
 activate S
-S -> DB: gruop 조회
+S -> DB: gruop 정보조회
 activate DB
 DB --> S: success
 deactivate DB
 S --> C: 200 ok (group)
 deactivate S
-C --> User: 그룹 비용정산페이지
+C --> User: 비용정산페이지
 
 loop
-  User -> C: 2. 비용 정보 입력 & 추가
-  C -> S: PUT groups/{guid}/expenses
+  User -> C: 3. 비용 정보 입력 & 추가
+  C -> S: POST expense/{guid}
   activate S
-  S -> DB: Item 업데이트(expense)
+  S -> DB: 비용정보 업데이트
   activate DB
   DB --> S: success
   deactivate DB
