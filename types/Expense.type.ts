@@ -3,5 +3,5 @@ import { FirebaseTimestamp } from "./common/FireBaseTimestamp";
 
 export interface ExpenseInfo extends AddExpense {
   id: string;
-  createdAt: FirebaseTimestamp;
+  createdAt?: FirebaseTimestamp;
 }
