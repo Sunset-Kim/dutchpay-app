@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import CalendeInput from "./CalendarInput";
 import userEvent from "@testing-library/user-event";
+import CalendeInput from "./CalendarInput";
 
 const date = new Date();
 const handleChange = jest.fn();
@@ -19,7 +19,7 @@ describe("calender input", () => {
     const input = screen.getByRole("textbox");
     expect(input).toBeInTheDocument();
     expect(input.value).toEqual(
-      `${date.getFullYear()}-${date.getMonth() + 1 < 10 ? "0" + date.getMonth() + 1 : date.getMonth() + 1}-${
+      `${date.getFullYear()}-${date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1}-${
         date.getDate() < 10 ? "0" + date.getDate() : date.getDate()
       }`
     );
