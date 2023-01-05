@@ -16,7 +16,7 @@
   - requset body sanitize : zod
   - too many api request : optimistic update vs mutate revalidate later
 
-# 구현내용
+## 구현내용
 - [x] : 정산을 위한 그룹을 생성 / 삭제할 수 있다.  
 - [x] : 생성된 그룹에 정산정보를 입력 / 삭제할 수 있다.
 - [x] : 정산정보를 차트로 보여준다.
@@ -24,10 +24,11 @@
 - [x] : 구글계정을 이용하여 유저가 어플리케이션에서 사용한 정보를 저장 / 수정 / 삭제 할 수 있다.
 - [x] : 데이터 베이스를 외부에서 관리할 수 있다.
 
-- [] : social media 공유 고려하기
-- [] : 익명사용자가 local로 서비스를 이용 가능하게
-- [] : excel import / export
-- [] : 기존사용자의 데이터 migration
+## 향후고려사항
+- [ ] : social media 공유 고려하기
+- [ ] : 익명사용자가 local로 서비스를 이용 가능하게
+- [ ] : excel import / export
+- [ ] : 기존사용자의 데이터 migration
   
 ## Service Sequence Diagram
 ![sequence diagram v1.0](https://user-images.githubusercontent.com/77092632/210679849-3fa075c3-a2b9-4706-bedd-ef7f83c2bb19.png)
@@ -47,8 +48,12 @@
 
 
 ## User Feedback
-- ~~ 다른 device로 접속했더니 정산정보가 없다. ~~
-- 기존의 로컬을 쓰고싶다. 로그인을 강제하지 말라
+- ~~다른 device로 접속했더니 정산정보가 없다.~~
+  - 빠르게 백엔드 만들어 드렸습니다. 
 - 기존의 정보를 하나하나 입력 다 해야하나
+- 자주만나는 멤버를 항상 다 입력해야 하나?
+- 기존 그룹은 놔두고 똑같은 그룹을 복사해서 생성하고 싶다.
+- 소통채널이 카카오톡인게 말이되냐
+- 기존의 로컬을 쓰고싶다. 로그인을 강제하지 말라
 - 카카오톡으로 바로 공유 안되냐?
 - 정산내역도 이미지로 공유하고 싶다
