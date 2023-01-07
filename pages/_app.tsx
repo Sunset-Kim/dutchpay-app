@@ -1,6 +1,7 @@
 import { MantineProvider } from "@mantine/core";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import ToastContainer from "../components/common/toast/ToastContainer";
 import Layout from "../components/layouts/Layout";
 import { AuthProvider } from "../context/auth/authContext";
 import GroupProvider from "../context/group/GroupContextProvider";
@@ -23,6 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
       >
         <AuthProvider>
           <GroupProvider>
+            <ToastContainer />
             <Layout>
               <Component {...pageProps} />
             </Layout>
