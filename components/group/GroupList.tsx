@@ -5,12 +5,12 @@ import NoContent from "../common/NoContent";
 import GroupCard from "./GroupCard";
 
 export interface GroupListProps {
-  groups: IGroup[] | null;
+  groups: IGroup[] | null | undefined;
   onDelete?: (id: string) => void;
 }
 
 export default function GroupList({ groups, onDelete }: GroupListProps) {
-  if (groups === null || groups.length === 0) {
+  if (groups == null || groups.length === 0) {
     return (
       <NoContent>
         <Box mb="xs">
