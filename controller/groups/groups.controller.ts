@@ -100,14 +100,8 @@ const findAll = async ({ headers, res }: Omit<ControllerInput, "body" | "query">
   }
 };
 
-const find = async ({ headers, query, res }: Omit<ControllerInput, "body">) => {
+const find = async ({ query, res }: Omit<ControllerInput, "body">) => {
   log("add");
-  const token = headers.authorization;
-  try {
-    await verifyToken(token);
-  } catch (error) {
-    return res.status(401).end();
-  }
 
   const groupId = getStringValueFromQuery({ query, field: "id" });
 
