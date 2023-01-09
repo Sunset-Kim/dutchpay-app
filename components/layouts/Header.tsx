@@ -1,14 +1,14 @@
-import { Button, Group, Header as MantineHeader, Text } from "@mantine/core";
+import { Button, Group, Header as MantineHeader, LoadingOverlay, Text } from "@mantine/core";
 import Link from "next/link";
 import { useAuth } from "../../context/auth/authContext";
 import Container from "./Container";
 
 export default function Header() {
-  const { authUser, signInWithGoogle, loading, signOut } = useAuth();
+  const { authUser, signInWithGoogle, signOut, loading } = useAuth();
 
   return (
     <MantineHeader height={56}>
-      {loading && <Text>로딩</Text>}
+      <LoadingOverlay visible={loading} />
       <Container>
         <Group h="100%" position="apart" align={"center"}>
           <Link href={"/"}>
