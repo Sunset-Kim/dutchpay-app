@@ -2,7 +2,6 @@ import { Center, Grid, LoadingOverlay, Stack } from "@mantine/core";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import AddExpenseForm from "../../components/AddExpenseForm";
-import NoAuth from "../../components/common/NoAuth";
 import NoContent from "../../components/common/NoContent";
 import ExpenseList from "../../components/ExpenseList";
 import ExpenseSummary from "../../components/ExpenseSummary";
@@ -63,7 +62,7 @@ export default function ExpenseMain() {
   const { query } = useRouter();
   const { authUser } = useAuth();
   const id = getStringValueFromQuery({ query, field: "id" });
-  const { data, isLoading, error, mutate } = useSWR(id && authUser ? ["api/groups", id] : null, fetcher, {
+  const { data, isLoading, error, mutate } = useSWR(id ? ["api/groups", id] : null, fetcher, {
     revalidateOnFocus: false,
   });
 
@@ -95,15 +94,11 @@ export default function ExpenseMain() {
     }
   };
 
-  if (authUser === null) {
-    return <NoAuth />;
-  }
-
-  if (id == null || isLoading) {
+  if (id == null || data === undefined || isLoading) {
     return <LoadingOverlay visible={isLoading} />;
   }
 
-  if (error || data == null) {
+  if (error || data === null) {
     return (
       <Grid.Col span={12}>
         <Center>
@@ -117,14 +112,14 @@ export default function ExpenseMain() {
     <>
       <Grid.Col span={12} md={5} order={2} orderMd={1}>
         <Stack>
-          <AddExpenseForm group={data} onSubmit={(expense) => addExpense({ groupId: id, expense })} />
-          <ExpenseSummary group={data} expenseList={data?.expenseList ?? []} />
+          {authUser && <AddExpenseForm group={data} onSubmit={(expense) => addExpense({ groupId: id, expense })} />}
+          <ExpenseSummary group={data} />
         </Stack>
       </Grid.Col>
       <Grid.Col span={12} md={7} order={1} orderMd={2}>
         <ExpenseList
           expenseList={data?.expenseList ?? []}
-          onDelete={(expenseId) => deleteExpense({ groupId: id, expenseId })}
+          onDelete={authUser ? (expenseId) => deleteExpense({ groupId: id, expenseId }) : undefined}
         />
       </Grid.Col>
     </>
