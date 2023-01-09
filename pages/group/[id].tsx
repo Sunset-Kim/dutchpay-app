@@ -67,8 +67,6 @@ export default function ExpenseMain() {
     revalidateOnFocus: false,
   });
 
-  console.log(error);
-
   const addExpense = async ({ groupId, expense }: { groupId: string; expense: AddExpense }) => {
     if (!data) return;
 

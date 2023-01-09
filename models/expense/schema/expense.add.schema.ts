@@ -4,7 +4,7 @@ const SchemaAddExpense = z.object({
   payer: z.string(),
   price: z.number().positive().int(),
   desc: z.string().optional(),
-  date: z.date().optional(),
+  date: z.string().optional(),
 });
 
 export default SchemaAddExpense;
