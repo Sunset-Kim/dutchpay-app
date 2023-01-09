@@ -1,10 +1,11 @@
 import { Button, Group, Header as MantineHeader, LoadingOverlay, Text } from "@mantine/core";
 import Link from "next/link";
 import { useAuth } from "../../context/auth/authContext";
+import Profile from "../common/Profile";
 import Container from "./Container";
 
 export default function Header() {
-  const { authUser, signInWithGoogle, signOut, loading } = useAuth();
+  const { authUser, signInWithGoogle, loading } = useAuth();
 
   return (
     <MantineHeader height={56}>
@@ -18,12 +19,8 @@ export default function Header() {
           </Link>
 
           <Group>
-            <Button onClick={authUser ? () => signOut() : () => signInWithGoogle()}>
-              {authUser ? "로그아웃" : "로그인"}
-            </Button>
-            <Button href={"/group/create"} component={Link} variant="outline">
-              그룹만들고 시작하기
-            </Button>
+            <Profile />
+            {authUser === null && <Button onClick={() => signInWithGoogle()}>Google 로그인</Button>}
           </Group>
         </Group>
       </Container>

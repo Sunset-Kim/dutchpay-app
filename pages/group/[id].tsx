@@ -49,6 +49,7 @@ const deleteFn = async ({ data, groupId, expenseId }: { data: IGroup; groupId: s
 
 const fetcher = async ([_, groupId]: string[]) => {
   const resp = await groupService.getGroup({ groupId });
+
   if (resp.error) {
     throw resp.error;
   }
@@ -65,6 +66,8 @@ export default function ExpenseMain() {
   const { data, isLoading, error, mutate } = useSWR(id && authUser ? ["api/groups", id] : null, fetcher, {
     revalidateOnFocus: false,
   });
+
+  console.log(error);
 
   const addExpense = async ({ groupId, expense }: { groupId: string; expense: AddExpense }) => {
     if (!data) return;

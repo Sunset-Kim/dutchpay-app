@@ -85,7 +85,7 @@ class GroupModel {
       const expenseListRef = await this.GroupsStore.doc(args.groupId).collection(EXPENSE_COLLECTION_NAME).get();
 
       if (!groupRef.exists) {
-        return;
+        throw "not exist";
       }
 
       const expenseList = expenseListRef.empty ? undefined : expenseListRef.docs.map((doc) => doc.data());
