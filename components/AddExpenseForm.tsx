@@ -42,7 +42,7 @@ export default function AddExpenseForm({ group, onSubmit }: AddExpenseFormProps)
           payer: members[Number(payer) - 1],
           price,
           desc,
-          date,
+          date: date?.toString(),
         }
       : {
           payer: members[Number(payer) - 1],
