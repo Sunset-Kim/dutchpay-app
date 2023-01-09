@@ -1,12 +1,10 @@
 # 개발내역 & 주요해결과제
 
-- 22.12.20 ~ 12.27 :: 로컬스토리지 기반한 dutchpay beta 배포
-  - dutchpay calulate logic : two pointer algorithm
-  - ui frame work - mantine UI vs chakra UI 
-  - ux member multi value
-  - localstorage es6 map, set parse
-  - aws amplify
-  
+- 22.01.06 ~ 22.01.09 :: bugfix, ui update v1.1.0
+  - add each page loading ui 
+  - add alert toastify module
+  - update login, logout ui/ux x
+
 - 22.01.02 ~ 22.01.05 :: firebase 연동한 dutchpay v1.0.0 배포
   - vercel + firebase
   - fireAuth logic 
@@ -15,6 +13,24 @@
   - model / contoller / service
   - requset body sanitize : zod
   - too many api request : optimistic update vs mutate revalidate later
+
+- 22.01.02 ~ 22.01.05 :: firebase 연동한 dutchpay v1.0.0 배포
+  - vercel + firebase
+  - fireAuth logic 
+  - firebase module : admin sdk vs client
+  - uml diagram
+  - model / contoller / service
+  - requset body sanitize : zod
+  - too many api request : optimistic update vs mutate revalidate later
+
+- 22.12.20 ~ 12.27 :: 로컬스토리지 기반한 dutchpay beta 배포
+  - dutchpay calulate logic : two pointer algorithm
+  - ui frame work - mantine UI vs chakra UI 
+  - ux member multi value
+  - localstorage es6 map, set parse
+  - aws amplify
+  
+
 
 ## 구현내용
 - [x] : 정산을 위한 그룹을 생성 / 삭제할 수 있다.  
@@ -38,18 +54,20 @@
 
 ## UI
 - 메인페이지
+
 ![/](https://user-images.githubusercontent.com/77092632/209542153-ad935c7f-a995-4f73-942d-59c44066c326.png)
 
 - 멀티그룹생성 페이지
+
 ![/group](https://user-images.githubusercontent.com/77092632/209542196-b05c802a-39e4-4ed8-8580-171ac276286f.png)
 
 - 멀티입력구현
+
 ![/group/create](https://user-images.githubusercontent.com/77092632/209544288-03b43f36-be97-4e47-b728-b9e4c0e76ebf.gif)
 
 
 ## User Feedback
 - ~~다른 device로 접속했더니 정산정보가 없다.~~
-  - 빠르게 백엔드 만들어 드렸습니다. 
 - 기존의 정보를 하나하나 입력 다 해야하나
 - 자주만나는 멤버를 항상 다 입력해야 하나?
 - 기존 그룹은 놔두고 똑같은 그룹을 복사해서 생성하고 싶다.
