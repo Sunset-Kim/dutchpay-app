@@ -8,9 +8,11 @@ const useStyles = createStyles((theme) => ({
     width: "100%",
     display: "flex",
     justifyContent: "space-between",
+    margin: "0 auto",
 
     [theme.fn.smallerThan("md")]: {
       flexDirection: "column",
+      maxWidth: "360px",
     },
   },
 
@@ -70,11 +72,8 @@ export default function Home() {
               justifySelf: "flex-end",
             }}
           >
-            <Button href={"group"} component={Link} variant="default">
-              기존사용자
-            </Button>
-            <Button href={"group/create"} component={Link} variant="default">
-              신규사용자
+            <Button href={"/group"} component={Link} variant="default">
+              바로 시작하기
             </Button>
           </Group>
         </Stack>

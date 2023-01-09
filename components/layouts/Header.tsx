@@ -14,7 +14,7 @@ export default function Header() {
         <Group h="100%" position="apart" align={"center"}>
           <Link href={"/"}>
             <Text size={"lg"} weight={800}>
-              우리자주만나요
+              더치페이
             </Text>
           </Link>
 
