@@ -1,7 +1,6 @@
-import { Group, LoadingOverlay, Text, ThemeIcon } from "@mantine/core";
-import { IconKey } from "@tabler/icons";
+import { LoadingOverlay } from "@mantine/core";
 import useSWR, { useSWRConfig } from "swr";
-import NoContent from "../../components/common/NoContent";
+import NoAuth from "../../components/common/NoAuth";
 import GroupList from "../../components/group/GroupList";
 import { useAuth } from "../../context/auth/authContext";
 import GroupsClientService from "../../services/groups.client.service";
@@ -31,20 +30,7 @@ export default function Groups() {
   };
 
   if (authUser === null) {
-    return (
-      <NoContent
-        title={
-          <Group>
-            <ThemeIcon size="xl" variant="light" radius="xl" color="yellow">
-              <IconKey />
-            </ThemeIcon>
-            <Text size="lg">로그인이 필요한 페이지 입니다</Text>
-          </Group>
-        }
-      >
-        상단의 버튼을 이용해서 로그인을 진행해주세요. 저장한 정보는 안전하게 보관됩니다.
-      </NoContent>
-    );
+    return <NoAuth />;
   }
 
   if (isLoading) {

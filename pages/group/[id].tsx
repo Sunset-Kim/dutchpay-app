@@ -1,7 +1,8 @@
-import { Center, Grid, Stack } from "@mantine/core";
+import { Center, Grid, LoadingOverlay, Stack } from "@mantine/core";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import AddExpenseForm from "../../components/AddExpenseForm";
+import NoAuth from "../../components/common/NoAuth";
 import NoContent from "../../components/common/NoContent";
 import ExpenseList from "../../components/ExpenseList";
 import ExpenseSummary from "../../components/ExpenseSummary";
@@ -81,11 +82,15 @@ export default function ExpenseMain() {
     });
   };
 
-  if (!id) {
-    return <div>데이터를 읽고 있습니다!</div>;
+  if (authUser === null) {
+    return <NoAuth />;
   }
 
-  if (error) {
+  if (id == null || isLoading) {
+    return <LoadingOverlay visible={isLoading} />;
+  }
+
+  if (error || data == null) {
     return (
       <Grid.Col span={12}>
         <Center>
@@ -93,10 +98,6 @@ export default function ExpenseMain() {
         </Center>
       </Grid.Col>
     );
-  }
-
-  if (isLoading || !data) {
-    return <div>...Loading</div>;
   }
 
   return (
