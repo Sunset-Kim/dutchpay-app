@@ -9,6 +9,7 @@ export default function ToastContainer() {
         position: "fixed",
         right: "1rem",
         bottom: "1rem",
+        zIndex: 9999,
       }}
     >
       {renderToast()}

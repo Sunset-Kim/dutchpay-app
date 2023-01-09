@@ -120,6 +120,8 @@ const find = async ({ headers, query, res }: Omit<ControllerInput, "body">) => {
     log(findResp);
     return res.json(findResp);
   }
+
+  return res.status(404).end();
 };
 
 export { add, remove, update, findAll, find };

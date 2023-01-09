@@ -1,11 +1,13 @@
-import { Center, Grid, Stack } from "@mantine/core";
+import { Center, Grid, LoadingOverlay, Stack } from "@mantine/core";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import AddExpenseForm from "../../components/AddExpenseForm";
+import NoAuth from "../../components/common/NoAuth";
 import NoContent from "../../components/common/NoContent";
 import ExpenseList from "../../components/ExpenseList";
 import ExpenseSummary from "../../components/ExpenseSummary";
 import { useAuth } from "../../context/auth/authContext";
+import toast from "../../libs/toast";
 import { AddExpense } from "../../models/expense/schema/expense.add.schema";
 import ExpenseClientService from "../../services/expense.client.service";
 import GroupsClientService from "../../services/groups.client.service";
@@ -47,6 +49,7 @@ const deleteFn = async ({ data, groupId, expenseId }: { data: IGroup; groupId: s
 
 const fetcher = async ([_, groupId]: string[]) => {
   const resp = await groupService.getGroup({ groupId });
+
   if (resp.error) {
     throw resp.error;
   }
@@ -64,28 +67,45 @@ export default function ExpenseMain() {
     revalidateOnFocus: false,
   });
 
+  console.log(error);
+
   const addExpense = async ({ groupId, expense }: { groupId: string; expense: AddExpense }) => {
     if (!data) return;
 
-    mutate(addFn({ data, groupId, expense }), {
-      revalidate: false,
-      rollbackOnError: true,
-    });
+    try {
+      await mutate(addFn({ data, groupId, expense }), {
+        revalidate: false,
+        rollbackOnError: true,
+      });
+      toast.success("정산정보 등록");
+    } catch (error) {
+      toast.error("정산정보 등록실패");
+    }
   };
 
   const deleteExpense = async ({ groupId, expenseId }: { groupId: string; expenseId: string }) => {
     if (!data) return;
-    mutate(deleteFn({ data, groupId, expenseId }), {
-      revalidate: false,
-      rollbackOnError: true,
-    });
+    try {
+      await mutate(deleteFn({ data, groupId, expenseId }), {
+        revalidate: false,
+        rollbackOnError: true,
+      });
+
+      toast.success("정산정보 삭제성공");
+    } catch (error) {
+      toast.error("정산정보 삭제실패");
+    }
   };
 
-  if (!id) {
-    return <div>데이터를 읽고 있습니다!</div>;
+  if (authUser === null) {
+    return <NoAuth />;
   }
 
-  if (error) {
+  if (id == null || isLoading) {
+    return <LoadingOverlay visible={isLoading} />;
+  }
+
+  if (error || data == null) {
     return (
       <Grid.Col span={12}>
         <Center>
@@ -93,10 +113,6 @@ export default function ExpenseMain() {
         </Center>
       </Grid.Col>
     );
-  }
-
-  if (isLoading || !data) {
-    return <div>...Loading</div>;
   }
 
   return (

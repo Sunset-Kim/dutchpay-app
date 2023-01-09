@@ -40,6 +40,7 @@ export default function useFirebaseAuth() {
   async function signInWithGoogle(): Promise<void> {
     const provider = new GoogleAuthProvider();
     try {
+      setLoading(true);
       const signInResult = await signInWithPopup(firebaseAuthClient.Auth, provider);
 
       if (signInResult.user) {
@@ -63,6 +64,8 @@ export default function useFirebaseAuth() {
       }
     } catch (err) {
       log(err);
+    } finally {
+      setLoading(false);
     }
   }
 
