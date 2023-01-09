@@ -1,4 +1,6 @@
 import { createStyles, DefaultMantineColor, keyframes, Notification, NotificationProps } from "@mantine/core";
+import { IconAlertTriangle, IconCheck, IconUrgent } from "@tabler/icons";
+import { ReactNode } from "react";
 import { useToast } from "../../../hooks/useToast";
 
 export type ToastCategories = "warning" | "error" | "default" | "success";
@@ -28,13 +30,31 @@ const useStyles = createStyles((theme, { duration }: { duration: number }) => ({
 
 const colorMap: Record<ToastCategories, DefaultMantineColor> = {
   default: "dark",
-  success: "blue",
+  success: "teal",
   error: "red",
   warning: "yellow",
 };
 
-function getColorFromCategory(category: ToastCategories): DefaultMantineColor {
-  return colorMap[category];
+const titleMap: Record<ToastCategories, string> = {
+  default: "알림",
+  success: "요청성공",
+  error: "요청실패",
+  warning: "경고",
+};
+
+const iconMap: Record<ToastCategories, ReactNode> = {
+  default: undefined,
+  success: <IconCheck />,
+  error: <IconAlertTriangle />,
+  warning: <IconUrgent />,
+};
+
+function getNotificationPorps(category: ToastCategories): NotificationProps {
+  return {
+    icon: iconMap[category],
+    title: titleMap[category],
+    color: colorMap[category],
+  };
 }
 
 export default function Toast(props: ToastProps) {
@@ -46,7 +66,7 @@ export default function Toast(props: ToastProps) {
       {...toastProps}
       className={cx(classes.play, { [classes.pause]: !isRuning })}
       ref={toastRef}
-      color={getColorFromCategory(toastProps.category)}
+      {...getNotificationPorps(props.category)}
     />
   );
 }

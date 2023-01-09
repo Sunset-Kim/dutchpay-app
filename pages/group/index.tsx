@@ -3,6 +3,7 @@ import useSWR, { useSWRConfig } from "swr";
 import NoAuth from "../../components/common/NoAuth";
 import GroupList from "../../components/group/GroupList";
 import { useAuth } from "../../context/auth/authContext";
+import toast from "../../libs/toast";
 import GroupsClientService from "../../services/groups.client.service";
 
 const groupsService = GroupsClientService.getInstance();
@@ -24,8 +25,9 @@ export default function Groups() {
     try {
       await groupsService.removeGroup({ groupId });
       await mutate("api/groups");
+      toast.success("그룹삭제 성공");
     } catch (error) {
-      console.log("삭제실패");
+      toast.success("그룹삭제 실패");
     }
   };
 

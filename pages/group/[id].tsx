@@ -7,6 +7,7 @@ import NoContent from "../../components/common/NoContent";
 import ExpenseList from "../../components/ExpenseList";
 import ExpenseSummary from "../../components/ExpenseSummary";
 import { useAuth } from "../../context/auth/authContext";
+import toast from "../../libs/toast";
 import { AddExpense } from "../../models/expense/schema/expense.add.schema";
 import ExpenseClientService from "../../services/expense.client.service";
 import GroupsClientService from "../../services/groups.client.service";
@@ -68,18 +69,29 @@ export default function ExpenseMain() {
   const addExpense = async ({ groupId, expense }: { groupId: string; expense: AddExpense }) => {
     if (!data) return;
 
-    mutate(addFn({ data, groupId, expense }), {
-      revalidate: false,
-      rollbackOnError: true,
-    });
+    try {
+      await mutate(addFn({ data, groupId, expense }), {
+        revalidate: false,
+        rollbackOnError: true,
+      });
+      toast.success("정산정보 등록");
+    } catch (error) {
+      toast.error("정산정보 등록실패");
+    }
   };
 
   const deleteExpense = async ({ groupId, expenseId }: { groupId: string; expenseId: string }) => {
     if (!data) return;
-    mutate(deleteFn({ data, groupId, expenseId }), {
-      revalidate: false,
-      rollbackOnError: true,
-    });
+    try {
+      await mutate(deleteFn({ data, groupId, expenseId }), {
+        revalidate: false,
+        rollbackOnError: true,
+      });
+
+      toast.success("정산정보 삭제성공");
+    } catch (error) {
+      toast.error("정산정보 삭제실패");
+    }
   };
 
   if (authUser === null) {
