@@ -1,4 +1,14 @@
 # 개발내역 & 주요해결과제
+- 22.01.09 ~ 22.01.10 :: bugfix, 공유하기, db CRUD
+  - 공유하기기능 추가
+    - desktop 에서는 clipboard 복사
+    - native 에서는 바로 공유하기
+  - 공유이후
+    - 그룹을 생성한 유저만 expense list를 수정 추가 가능
+  - firebase doc 삭제이후 정산내역(collection)이 남아있던 문제해결
+  - edge case bugfix
+  - Component 분리
+    - logic / unit test
 
 - 22.01.06 ~ 22.01.09 :: bugfix, ui update v1.1.0
   - add each page loading ui 
