@@ -1,17 +1,17 @@
+import NoContent from "@/components/common/NoContent";
+import AddExpenseForm from "@/components/expense/AddExpenseForm";
+import ExpenseList from "@/components/expense/ExpenseList";
+import ExpenseSummary from "@/components/expense/ExpenseSummary";
+import { useAuth } from "@/context/auth/authContext";
+import toast from "@/libs/toast";
+import { AddExpense } from "@/models/expense/schema/expense.add.schema";
+import ExpenseClientService from "@/services/expense.client.service";
+import GroupsClientService from "@/services/groups.client.service";
+import { IGroup } from "@/types/Group.type";
+import getStringValueFromQuery from "@/utils/getValueFromQuery";
 import { Center, Grid, LoadingOverlay, Stack } from "@mantine/core";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import AddExpenseForm from "../../components/AddExpenseForm";
-import NoContent from "../../components/common/NoContent";
-import ExpenseList from "../../components/ExpenseList";
-import ExpenseSummary from "../../components/ExpenseSummary";
-import { useAuth } from "../../context/auth/authContext";
-import toast from "../../libs/toast";
-import { AddExpense } from "../../models/expense/schema/expense.add.schema";
-import ExpenseClientService from "../../services/expense.client.service";
-import GroupsClientService from "../../services/groups.client.service";
-import { IGroup } from "../../types/Group.type";
-import getStringValueFromQuery from "../../utils/getValueFromQuery";
 
 const groupService = GroupsClientService.getInstance();
 
@@ -39,7 +39,7 @@ const deleteFn = async ({ data, groupId, expenseId }: { data: IGroup; groupId: s
     throw "Error delete expense";
   }
 
-  const newExpenseList: IGroup["expenseList"] = data.expenseList.filter((expense) => expense.id !== expenseId);
+  const newExpenseList: IGroup["expenseList"] = data.expenseList?.filter((expense) => expense.id !== expenseId);
   return {
     ...data,
     expenseList: newExpenseList,
@@ -65,6 +65,8 @@ export default function ExpenseMain() {
   const { data, isLoading, error, mutate } = useSWR(id ? ["api/groups", id] : null, fetcher, {
     revalidateOnFocus: false,
   });
+
+  const isOwner = authUser?.uid === data?.ownerId;
 
   const addExpense = async ({ groupId, expense }: { groupId: string; expense: AddExpense }) => {
     if (!data) return;
@@ -112,14 +114,14 @@ export default function ExpenseMain() {
     <>
       <Grid.Col span={12} md={5} order={2} orderMd={1}>
         <Stack>
-          {authUser && <AddExpenseForm group={data} onSubmit={(expense) => addExpense({ groupId: id, expense })} />}
+          {isOwner && <AddExpenseForm group={data} onSubmit={(expense) => addExpense({ groupId: id, expense })} />}
           <ExpenseSummary group={data} />
         </Stack>
       </Grid.Col>
       <Grid.Col span={12} md={7} order={1} orderMd={2}>
         <ExpenseList
           expenseList={data?.expenseList ?? []}
-          onDelete={authUser ? (expenseId) => deleteExpense({ groupId: id, expenseId }) : undefined}
+          onDelete={isOwner ? (expenseId) => deleteExpense({ groupId: id, expenseId }) : undefined}
         />
       </Grid.Col>
     </>

@@ -1,24 +1,30 @@
-import { ExpenseSegment } from "../../types/ExpenseSummary.type";
+import { ExpenseInfo } from "@/types/Expense.type";
 
-interface Transaction {
+export interface Transaction {
   sender: string;
   receiver: string;
   amount: number;
 }
 
-export function getMinTransaction(list: Pick<ExpenseSegment, "payer" | "price">[], members: string[]) {
-  const tarnsactionList: Transaction[] = [];
-  const total = list.reduce((total, segment) => (total += segment.price), 0);
-  if (total === 0) return [];
+export interface TransactionProps {
+  expenses: Pick<ExpenseInfo, "payer" | "price">[];
+  members: string[];
+  totalPrice: number;
+}
 
-  const perAmount = total / members.length;
+export function getMinTransaction(props: TransactionProps) {
+  const { expenses, members, totalPrice } = props;
+  const tarnsactionList: Transaction[] = [];
+  if (totalPrice === 0) return [];
+
+  const perAmount = totalPrice / members.length;
   const memberToPay = new Map();
 
   members.forEach((member) => {
     memberToPay.set(member, perAmount);
   });
 
-  list.forEach((segment) => {
+  expenses.forEach((segment) => {
     const { payer, price } = segment;
     if (memberToPay.has(payer)) {
       memberToPay.set(payer, memberToPay.get(payer) - price);
@@ -31,8 +37,6 @@ export function getMinTransaction(list: Pick<ExpenseSegment, "payer" | "price">[
       diff: value,
     }))
     .sort((a, b) => a.diff - b.diff);
-
-  console.log(payList);
 
   let left = 0;
   let right = payList.length - 1;

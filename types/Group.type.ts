@@ -13,5 +13,5 @@ export interface IGroup {
   members: string[];
   name: string;
   ownerId: string;
-  expenseList: ExpenseInfo[];
+  expenseList?: ExpenseInfo[];
 }

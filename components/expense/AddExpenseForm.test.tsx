@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { IGroup } from "../types/Group.type";
+import { IGroup } from "../../types/Group.type";
 import AddExpenseForm from "./AddExpenseForm";
 
 const handleSubmit = jest.fn();
@@ -23,10 +23,11 @@ const renderComponent = (group: IGroup) => {
   };
 };
 
-const DEFAULT_GROUP = {
+const DEFAULT_GROUP: IGroup = {
   id: "id1",
   name: "abc",
   members: ["김영식", "김민우"],
+  ownerId: "id1",
 };
 
 describe("AddExpenseForm(정산정보 입력폼)", () => {

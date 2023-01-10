@@ -1,3 +1,4 @@
+import { deleteCollection } from "@/utils/firebase_collection_delete";
 import { firestore } from "firebase-admin";
 import debug from "../../utils/debug_log";
 import firebaseAdmin from "../common/firebase_admin.model";
@@ -52,7 +53,11 @@ class GroupModel {
     log(args);
 
     try {
+      const expenseCollectionRef = this.GroupsStore.doc(args.groupId).collection(EXPENSE_COLLECTION_NAME);
+
+      await deleteCollection(firebaseAdmin.Firestore, expenseCollectionRef, 10);
       await this.GroupsStore.doc(args.groupId).delete();
+
       return "delete";
     } catch (error) {
       log(error);

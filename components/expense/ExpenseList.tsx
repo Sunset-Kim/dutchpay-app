@@ -1,10 +1,10 @@
+import NoContent from "@/components/common/NoContent";
+import Price from "@/components/common/Price";
+import { ExpenseInfo } from "@/types/Expense.type";
 import { ActionIcon, ScrollArea, Table, Text } from "@mantine/core";
 import { IconTrash } from "@tabler/icons";
 import dayjs from "dayjs";
 import { useEffect, useRef } from "react";
-import { ExpenseInfo } from "../types/Expense.type";
-import NoContent from "./common/NoContent";
-import Price from "./Price";
 
 interface ExpenseListProps {
   expenseList: ExpenseInfo[];

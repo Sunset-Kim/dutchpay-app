@@ -1,3 +1,4 @@
 import { formatKRWCurrency } from "./formatKRWCurrency";
+import { toPercent } from "./toPercent";
 
-export { formatKRWCurrency };
+export { formatKRWCurrency, toPercent };
