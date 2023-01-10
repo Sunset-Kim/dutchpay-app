@@ -1,7 +1,8 @@
+import { EXPENSE_INFO_LIST } from "@/fixture/expense";
+import { ExpenseInfo } from "@/types/Expense.type";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { EXPENSE_INFO_LIST } from "../fixture/expense";
-import { ExpenseInfo } from "../types/Expense.type";
+
 import ExpenseList from "./ExpenseList";
 
 beforeAll(() => {

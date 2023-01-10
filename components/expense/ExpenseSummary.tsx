@@ -1,11 +1,11 @@
+import { getExpenseSummary } from "@/libs/calc/getExpenseSummary";
+import { getMinTransaction } from "@/libs/calc/getMinTransactions";
+import { exportPNG } from "@/libs/exportImage/exportJpeg";
 import toast from "@/libs/toast";
+import { IGroup } from "@/types/Group.type";
 import { ActionIcon, Button, Group, Stack } from "@mantine/core";
 import { IconShare } from "@tabler/icons";
 import { useRef } from "react";
-import { convertExpenseListToMap } from "../libs/converter/convertExpenseListToMap";
-import { exportPNG } from "../libs/exportImage/exportJpeg";
-import { IGroup } from "../types/Group.type";
-
 import ExpenseChart from "./ExpenseChart";
 import ExpenseResult from "./ExpenseResult";
 
@@ -14,16 +14,21 @@ interface ExpenseSummaryProps {
 }
 
 export default function ExpenseSummary({ group }: ExpenseSummaryProps) {
-  const totalPrice = group.expenseList?.reduce((total, info) => (total += info.price), 0);
-  const info = group.expenseList && convertExpenseListToMap(group.expenseList, totalPrice!);
-  const container = useRef<HTMLDivElement>(null);
+  const { totalPrice, expenseMap } = getExpenseSummary(group.expenseList);
+  const perPrice = totalPrice / group.members.length;
 
+  const transactions = getMinTransaction({
+    expenses: [...expenseMap.values()],
+    members: group.members,
+    totalPrice,
+  });
+
+  const container = useRef<HTMLDivElement>(null);
   const share = async () => {
     if (typeof navigator.share === "function") {
       try {
         await navigator.share({
           title: "더치페이 앱",
-          text: "현재까지의 정산내역을 공유드립니다",
           url: location.href,
         });
       } catch (error) {
@@ -42,11 +47,8 @@ export default function ExpenseSummary({ group }: ExpenseSummaryProps) {
   return (
     <Stack>
       <Stack ref={container}>
-        <ExpenseChart ExpenseSegments={info ? [...info.values()].sort((a, b) => b.price - a.price) : []} />
-        <ExpenseResult
-          data={info ? [...info.values()].sort((a, b) => b.price - a.price) : []}
-          members={group.members}
-        />
+        <ExpenseChart expenseList={[...expenseMap.values()]} totalPrice={totalPrice} perPrice={perPrice} />
+        <ExpenseResult transactions={transactions} />
       </Stack>
       <Group spacing="xs">
         <Button variant="outline" onClick={() => exportPNG(container.current, { maxWidth: 320 })}>

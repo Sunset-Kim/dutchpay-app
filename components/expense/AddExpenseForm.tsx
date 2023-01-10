@@ -1,8 +1,8 @@
+import { AddExpense } from "@/models/expense/schema/expense.add.schema";
+import { IGroup } from "@/types/Group.type";
 import { Button, Card, Group, NativeSelect, NumberInput, Stack, Switch, TextInput } from "@mantine/core";
 import { FormEventHandler, ReactNode, useState } from "react";
-import { AddExpense } from "../models/expense/schema/expense.add.schema";
-import { IGroup } from "../types/Group.type";
-import CalendarInput from "./CalendarInput";
+import CalendarInput from "../common/CalendarInput";
 
 const MIN_AMOUNT = 0;
 const MAX_AMOUNT = 10_000_000;

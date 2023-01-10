@@ -3,19 +3,19 @@ import { IconLogout } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { useAuth } from "../../context/auth/authContext";
 
-export default function Profile() {
-  const { authUser, signOut } = useAuth();
-  const { push } = useRouter();
+interface ProfileProps {
+  signOut: () => void;
+}
 
-  if (authUser === null) {
-    return null;
-  }
+export default function Profile({ signOut }: ProfileProps) {
+  const { authUser } = useAuth();
+  const { push } = useRouter();
 
   return (
     <Menu position="bottom-end" shadow="md" width={180} withArrow>
       <Menu.Target>
         <UnstyledButton>
-          <Avatar radius={"xl"} src={authUser.photoURL} alt={"user"} color="blue" />
+          <Avatar radius={"xl"} src={authUser?.photoURL} alt={"user"} color="blue" />
         </UnstyledButton>
       </Menu.Target>
 

@@ -5,7 +5,7 @@ import Profile from "../common/Profile";
 import Container from "./Container";
 
 export default function Header() {
-  const { authUser, signInWithGoogle, loading } = useAuth();
+  const { authUser, signInWithGoogle, loading, signOut } = useAuth();
 
   return (
     <MantineHeader height={56}>
@@ -19,7 +19,7 @@ export default function Header() {
           </Link>
 
           <Group>
-            <Profile />
+            {authUser && <Profile signOut={signOut} />}
             {authUser === null && <Button onClick={() => signInWithGoogle()}>Google 로그인</Button>}
           </Group>
         </Group>
