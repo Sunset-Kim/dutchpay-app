@@ -15,7 +15,7 @@ interface ExpenseSummaryProps {
 
 export default function ExpenseSummary({ group }: ExpenseSummaryProps) {
   const totalPrice = group.expenseList?.reduce((total, info) => (total += info.price), 0);
-  const info = convertExpenseListToMap(group.expenseList, totalPrice);
+  const info = group.expenseList && convertExpenseListToMap(group.expenseList, totalPrice!);
   const container = useRef<HTMLDivElement>(null);
 
   const share = async () => {
@@ -42,8 +42,11 @@ export default function ExpenseSummary({ group }: ExpenseSummaryProps) {
   return (
     <Stack>
       <Stack ref={container}>
-        <ExpenseChart ExpenseSegments={[...info.values()].sort((a, b) => b.price - a.price)} total={totalPrice} />
-        <ExpenseResult data={[...info.values()].sort((a, b) => b.price - a.price)} members={group.members} />
+        <ExpenseChart ExpenseSegments={info ? [...info.values()].sort((a, b) => b.price - a.price) : []} />
+        <ExpenseResult
+          data={info ? [...info.values()].sort((a, b) => b.price - a.price) : []}
+          members={group.members}
+        />
       </Stack>
       <Group spacing="xs">
         <Button variant="outline" onClick={() => exportPNG(container.current, { maxWidth: 320 })}>

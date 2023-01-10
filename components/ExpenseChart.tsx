@@ -7,7 +7,6 @@ import { formatKRWCurrency } from "../libs/formater";
 
 interface ExpenseChartProps {
   ExpenseSegments: ExpenseSegment[];
-  total: number;
 }
 
 const useStyles = createStyles((theme) => ({
@@ -34,10 +33,8 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function ExpenseChart({ ExpenseSegments, total }: ExpenseChartProps) {
+export default function ExpenseChart({ ExpenseSegments }: ExpenseChartProps) {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
-  const perPrice = total / ExpenseSegments.length ?? 0;
   const secitons: ProgressSection[] = ExpenseSegments.map((item, i) => {
     const { payer, part } = item;
     return { value: part, label: payer, color: COLORS[i % COLORS.length] };
@@ -74,17 +71,17 @@ export default function ExpenseChart({ ExpenseSegments, total }: ExpenseChartPro
           </Text>
         </Group>
 
-        <Text size="xl" weight={700}>
+        {/* <Text size="xl" weight={700}>
           {total ? formatKRWCurrency(total) : "-"}
-        </Text>
+        </Text> */}
       </Group>
 
       <Divider />
 
       <Box py="xs">
-        {ExpenseSegments.length !== 0 && (
+        {/* {ExpenseSegments.length !== 0 && (
           <Text size="sm">{`이번에 1인당 결제하실 금액은 ${formatKRWCurrency(perPrice)} 입니다.`}</Text>
-        )}
+        )} */}
 
         <Stack spacing={0} mt="md">
           <Progress sections={secitons} size={50} mb="sm" classNames={{ label: classes.progressLabel }} />
