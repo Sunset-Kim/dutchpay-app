@@ -50,11 +50,6 @@
 - [x] : 구글계정을 이용하여 유저가 어플리케이션에서 사용한 정보를 저장 / 수정 / 삭제 할 수 있다.
 - [x] : 데이터 베이스를 외부에서 관리할 수 있다.
 
-## 향후고려사항
-- [ ] : social media 공유 고려하기
-- [ ] : 익명사용자가 local로 서비스를 이용 가능하게
-- [ ] : excel import / export
-- [ ] : 기존사용자의 데이터 migration
   
 ## Service Sequence Diagram
 ![sequence diagram v1.0](https://user-images.githubusercontent.com/77092632/210679849-3fa075c3-a2b9-4706-bedd-ef7f83c2bb19.png)
